@@ -1,5 +1,15 @@
 # OKF Civic Sample — Civil-Society Knowledge as an Open Knowledge Format Bundle
 
+> A reference example of representing civil-society knowledge — community resources and nonprofit tech offers — in the Open Knowledge Format (OKF).
+
+![content: CC BY-SA 4.0](https://img.shields.io/badge/content-CC_BY--SA_4.0-blue)
+![code: AGPL-3.0](https://img.shields.io/badge/code-AGPL--3.0-blue)
+![format: OKF v0.1](https://img.shields.io/badge/format-OKF_v0.1-success)
+![civic profile: v0.1](https://img.shields.io/badge/civic_profile-v0.1-orange)
+![maintained by TechSoup Global Network](https://img.shields.io/badge/maintained_by-TechSoup_Global_Network-7B2FBE)
+
+**[Learn more about TechSoup](https://about.techsoup.org/) · [Support TechSoup](https://www.every.org/techsoup)**
+
 A small, open **reference bundle** showing how civil-society knowledge — community resources, services, and the intelligence needed to use them — can be represented in Google's [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf).
 
 It is also a working **Obsidian vault**: clone it, open the folder in [Obsidian](https://obsidian.md), and you can read, link, and explore the knowledge the same way a human maintainer would. The format is just markdown + YAML — no database, no platform, no lock-in.
