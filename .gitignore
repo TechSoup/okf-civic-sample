@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Obsidian — keep shared config (app.json), ignore per-user workspace/cache
+.obsidian/workspace*.json
+.obsidian/cache
+.trash/
