@@ -2,8 +2,7 @@
 
 > A reference example of representing civil-society knowledge — community resources and nonprofit tech offers — in the Open Knowledge Format (OKF).
 
-![content: CC BY-SA 4.0](https://img.shields.io/badge/content-CC_BY--SA_4.0-blue)
-![code: AGPL-3.0](https://img.shields.io/badge/code-AGPL--3.0-blue)
+![license: CC BY-SA 4.0](https://img.shields.io/badge/license-CC_BY--SA_4.0-blue)
 ![format: OKF v0.1](https://img.shields.io/badge/format-OKF_v0.1-success)
 ![civic profile: v0.1](https://img.shields.io/badge/civic_profile-v0.1-orange)
 ![maintained by TechSoup Global Network](https://img.shields.io/badge/maintained_by-TechSoup_Global_Network-7B2FBE)
@@ -39,15 +38,11 @@ For human-services directory data, the sector's established standard is **[Open 
 
 - **As a reader/agent:** browse on GitHub, or `git clone` and read the markdown.
 - **As a maintainer:** open the folder as an Obsidian vault — frontmatter shows in the Properties panel, links power the graph view, and templates make new records easy.
-- **To check conformance:** run `python3 validate.py` (a tiny starter linter — checks every doc has a non-empty `type` and reports internal link health).
+- **To check conformance:** a standalone `okf-validate` tool (checks every doc has a `type` and reports link health) is in the works — link coming once it's published.
 
 ## Licensing
 
-Dual-licensed, deliberately viral so derivatives stay open and credit the source:
-- **Knowledge / content** (the markdown bundle): [Creative Commons BY-SA 4.0](LICENSE-CONTENT.md).
-- **Code** (e.g. `validate.py`): [AGPL-3.0](LICENSE).
-
-Use it, fork it, build on it — just credit the source and keep your derivatives open.
+Licensed under [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](LICENSE) — deliberately viral, so derivatives stay open and credit the source. Use it, fork it, build on it; just credit the source and keep your derivatives open.
 
 ## Contributing & contact
 
