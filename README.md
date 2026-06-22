@@ -26,7 +26,7 @@ TechSoup is adopting OKF for exactly this. This repo demonstrates the pattern fo
 - **Files are the knowledge.** Each resource is a markdown file with YAML frontmatter. The directory *is* the bundle.
 - **`type` is the only required field.** Everything else is recommended or a producer extension.
 - **`okf_version`** is declared in the root [`index.md`](index.md).
-- **Links are graph edges.** Resources reference each other with normal markdown links (referral partners, alternatives, capabilities).
+- **Links are graph edges.** Resources reference each other with normal markdown links (referral partners, alternatives, capabilities), and the *type* of each edge is carried in the link title (`alternative`, `complements`) following OKF issue [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101) — so the edges are machine-readable, not just prose.
 - **`index.md` files** give progressive disclosure as an agent (or a person) walks the tree.
 - **Extensions are namespaced** under `x-civic:` so they're clearly additive to core OKF (see the civic profile).
 

@@ -24,7 +24,8 @@ x-civic:
     end: 2026-07-01
   operational_status: comingSoon
   provenance:
-    source: "Range (Caravan Studios / TechSoup) — meal-sites feed, sampled 2026-06-20"
+    last_audited: 2026-06-20
+    source: "Range (Caravan Studios / TechSoup) — meal-sites feed"
     range_id: R-0023454
 ---
 

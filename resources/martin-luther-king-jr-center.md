@@ -24,7 +24,8 @@ x-civic:
     end: 2026-07-30
   operational_status: operational
   provenance:
-    source: "Range (Caravan Studios / TechSoup) — meal-sites feed, sampled 2026-06-20"
+    last_audited: 2026-06-20
+    source: "Range (Caravan Studios / TechSoup) — meal-sites feed"
     range_id: R-0031159
 ---
 
@@ -33,4 +34,4 @@ x-civic:
 A free summer lunch site in Berkeley. Meals are served on site (congregate).
 
 ## Connections
-- Nearby alternative: [Frances Albrier Center](frances-albrier-center.md) — same capability and meal.
+- [Frances Albrier Center](frances-albrier-center.md "alternative: same free-summer-meals capability, nearby") — same meal.

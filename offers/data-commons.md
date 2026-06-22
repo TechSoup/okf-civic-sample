@@ -30,6 +30,6 @@ x-civic:
 Free and open. Explore on the web, or query programmatically via the API and data-science notebooks. Useful for grounding needs assessments, grant narratives, and community research in authoritative public data.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md) (productivity) and [Buffer for Nonprofits](buffer-for-nonprofits.md) (social media) — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together.
 
 > **Sample note:** deeper implementation and use-case guidance is maintained in the private VKB.

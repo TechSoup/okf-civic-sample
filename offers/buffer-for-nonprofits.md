@@ -34,6 +34,6 @@ Half off all paid plans; includes the Buffer AI Assistant for post ideas and rew
 Open to registered 501(c)(3)s, international equivalents, and libraries.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md) (productivity) and [Data Commons](data-commons.md) (open public data) — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Data Commons](data-commons.md "complements: public data") — distinct capabilities that work together.
 
 > **Sample note:** full implementation and sustainability guidance live in the private VKB.

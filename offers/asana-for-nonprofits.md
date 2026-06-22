@@ -34,4 +34,4 @@ Boards, lists, and timelines to track grants, coordinate volunteers, and manage 
 Open to US-based 501(c)(3) charities (verification required). Note the **US-only** availability — a good example of how eligibility varies offer to offer, which a recommender must respect.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md) (productivity) and [Buffer for Nonprofits](buffer-for-nonprofits.md) (social media) — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together.

@@ -35,6 +35,6 @@ Gmail, Docs, Drive, and Meet at no cost; unlimited users with 30GB of storage ea
 Open to registered charities (verification required). Excludes K–12 schools, universities, hospitals, and government entities, which have separate Google programs.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Data Commons](data-commons.md) (open public data) and [Buffer for Nonprofits](buffer-for-nonprofits.md) (social media) — distinct capabilities that work together, not alternatives.
+Part of a common nonprofit stack alongside [Data Commons](data-commons.md "complements: public data") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together, not alternatives.
 
 > **Sample note:** implementation prerequisites (domain/DNS), security posture, and sustainability guidance live in the full (private) VKB.

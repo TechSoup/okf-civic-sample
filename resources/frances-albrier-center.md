@@ -24,7 +24,8 @@ x-civic:
     end: 2026-07-30
   operational_status: operational
   provenance:
-    source: "Range (Caravan Studios / TechSoup) — meal-sites feed, sampled 2026-06-20"
+    last_audited: 2026-06-20
+    source: "Range (Caravan Studios / TechSoup) — meal-sites feed"
     range_id: R-0031158
 ---
 
@@ -33,4 +34,4 @@ x-civic:
 A free summer lunch site in Berkeley, part of the federal summer meals program. Meals are served on site (congregate).
 
 ## Connections
-- Nearby alternative: [Martin Luther King Jr. Center](martin-luther-king-jr-center.md) — same `free-summer-meals` capability, also lunch. See [the civic profile](../docs/civic-profile.md) on modeling alternatives so a tool can suggest the closest open site.
+- [Martin Luther King Jr. Center](martin-luther-king-jr-center.md "alternative: same free-summer-meals capability, nearby") — also lunch. See [the civic profile](../docs/civic-profile.md) on modeling alternatives so a tool can suggest the closest open site.

@@ -28,12 +28,24 @@ It is offered as a **starting point for discussion** with the OKF community — 
 | `category` | Human-facing grouping (e.g. Basic Needs, Legal, Digital Inclusion). |
 | `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." |
 | `eligibility` | Who qualifies: `org_types`, `regions`, mission/NTEE codes, income notes, etc. |
-| `provenance` | `last_audited` (date) and `source` — trust depends on freshness and traceability. |
+| `operational_status` | Real-world state of the service (e.g. `operational`, `comingSoon`) — **distinct from `status`**. `status` describes the *knowledge record*; `operational_status` describes the *thing the record is about*. A site can be a valid `ACTIVE` record while `comingSoon` in reality. |
+| `provenance` | `last_audited` (date) and `source` on every record, plus a type-specific identifier — `range_id` for directory records, `vendor_url` for offers. Trust depends on freshness and traceability. |
 | `reason` | Required when `status` is `ARCHIVED` or `REJECTED` — the "looks like a discount/offer but isn't" record. |
 
 ## Relationships as graph edges
 
-Use normal markdown links in the body for referral partners, parent programs, and alternatives. Shared `capability` values let a tool reason about substitution without hard-coding it.
+Use normal markdown links in the body for referral partners, parent programs, and alternatives. To make the *type* of each edge machine-readable — not just legible to a human reading the prose — this profile adopts the link-title convention proposed in OKF issue [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101): a leading token before a colon in the link title names the edge.
+
+```
+[Martin Luther King Jr. Center](martin-luther-king-jr-center.md "alternative: same free-summer-meals capability, nearby")
+```
+
+Two civic edge types are used in this bundle, both grounded in `capability`:
+
+- **`alternative`** — the targets share a `capability`; you need only one (substitutes). Used among the meal sites.
+- **`complements`** — the targets provide *distinct* capabilities that work together as a stack. Used among the offers.
+
+Existing OKF consumers that ignore link titles still see valid links; tools that read them get typed edges. Shared `capability` values let a tool reason about substitution even where no explicit edge is written.
 
 ## Relationship to Open Referral / HSDS
 
@@ -55,8 +67,16 @@ For human-services directory data (e.g. 211), the sector's established standard 
 
 What OKF adds on top of HSDS: **verbose, agent-ready context** (the prose a model needs to actually advise someone), **cross-domain generality** (the same format carries offers and skills too, not just directories), **human editability** (markdown in Git, not a normalized database), and **federation** over Git. What HSDS does better: strict validation, relational integrity, and a mature exchange ecosystem. A clean division of labor — and a documented OKF↔HSDS crosswalk like this one is exactly the kind of "human-services profile" worth proposing to both communities.
 
+## Alignment with the OKF spec discussion
+
+This profile was revised to track active proposals in the OKF issue tracker rather than invent parallel conventions:
+
+- **Typed link edges** follow [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101) (link-title relationship tokens) — see "Relationships as graph edges" above.
+- **Lifecycle `status` and `provenance`** overlap [#120](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/120), which proposes `status`, `aliases`, a relationship index, and a rationale trail as *core* conventions. We arrived at the same needs independently, from the civic domain. If core OKF adopts a `status` vocabulary, we will map our five-state enum (`PROPOSED`…`REJECTED`) onto it; #120's current draft proposes a simpler `active`/`deprecated`.
+- **`provenance` / freshness** relates to [#94](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/94) (inline citation) and [#97](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/97) (recommending `timestamp` for staleness detection).
+
 ## Open questions for the community
 
-- Should `status` and `provenance` be promoted toward core OKF, or stay profile-level?
-- A shared controlled vocabulary for `capability` and `category`?
+- Should `status` and `provenance` be promoted toward core OKF (as [#120](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/120) proposes), or stay profile-level?
+- A shared controlled vocabulary for `capability` and `category` — and should `alternative` / `complements` be registered as edge types alongside #101's starter vocabulary?
 - How to express eligibility precisely without reinventing HSDS?
