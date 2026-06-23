@@ -1,0 +1,33 @@
+OKF Civic Sample
+Copyright 2026 TechSoup Global Network
+
+=============================================================================
+THIRD-PARTY ATTRIBUTION
+=============================================================================
+
+This project implements and builds upon the Open Knowledge Format (OKF)
+specification, maintained by Google LLC under the Apache License, Version 2.0.
+
+  Open Knowledge Format (OKF) v0.1
+  Copyright Google LLC
+  Source:  https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf
+  License: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/LICENSE.md
+
+A copy of the Apache License, Version 2.0 is available at:
+  http://www.apache.org/licenses/LICENSE-2.0
+
+The OKF specification defines the bundle structure (markdown files with YAML
+frontmatter, the `type` field, `okf_version`, index files, and link-based graph
+edges) that this sample conforms to. The `x-civic` profile and all sample
+content in this bundle are original works by TechSoup.
+
+=============================================================================
+LICENSES SUMMARY
+=============================================================================
+
+  OKF specification (upstream)     Apache License 2.0  (Google LLC)
+  This bundle and civic profile     CC BY-SA 4.0        (TechSoup Global Network)
+
+Apache 2.0 is a permissive license that allows this bundle to be released
+under CC BY-SA 4.0, provided the above attribution is retained. See the
+LICENSE file at the root of this repository for the full CC BY-SA 4.0 text.
