@@ -6,6 +6,7 @@ resource: https://datacommons.org/
 tags: [data, open-data, research, public-good]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Data & Research
   capability: public-data
@@ -20,6 +21,16 @@ x-civic:
     last_audited: 2026-05-26
     vendor_url: https://datacommons.org/
     source: "TechSoup VKB sample — full expert guidance held in the private VKB"
+  relations:
+    - target: google-workspace-for-nonprofits.md
+      type: complements
+      note: "productivity suite"
+    - target: buffer-for-nonprofits.md
+      type: complements
+      note: "social-media management"
+    - target: asana-for-nonprofits.md
+      type: complements
+      note: "project management"
 ---
 
 # Data Commons
@@ -30,6 +41,6 @@ x-civic:
 Free and open. Explore on the web, or query programmatically via the API and data-science notebooks. Useful for grounding needs assessments, grant narratives, and community research in authoritative public data.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite"), [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management"), and [Asana for Nonprofits](asana-for-nonprofits.md "complements: project management") — distinct capabilities that work together.
 
 > **Sample note:** deeper implementation and use-case guidance is maintained in the private VKB.

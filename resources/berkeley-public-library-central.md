@@ -6,6 +6,7 @@ resource: https://www.rangeapp.org/
 tags: [summer-meals, food, youth, library]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Food
   capability: free-summer-meals
@@ -27,6 +28,7 @@ x-civic:
     last_audited: 2026-06-20
     source: "Range (Caravan Studios / TechSoup) — meal-sites feed"
     range_id: R-0035115
+  relations: []
 ---
 
 # Berkeley Public Library — Central Branch

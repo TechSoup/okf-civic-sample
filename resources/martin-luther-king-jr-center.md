@@ -6,6 +6,7 @@ resource: https://www.rangeapp.org/
 tags: [summer-meals, food, youth]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Food
   capability: free-summer-meals
@@ -27,6 +28,10 @@ x-civic:
     last_audited: 2026-06-20
     source: "Range (Caravan Studios / TechSoup) — meal-sites feed"
     range_id: R-0031159
+  relations:
+    - target: frances-albrier-center.md
+      type: alternative
+      note: "same free-summer-meals capability, nearby"
 ---
 
 # Martin Luther King Jr. Center

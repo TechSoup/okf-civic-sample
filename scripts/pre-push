@@ -1,0 +1,19 @@
+#!/bin/sh
+# Optional pre-push hook: block a push if the bundle fails validation.
+# Install with:  ln -s ../../scripts/pre-push .git/hooks/pre-push
+#
+# Uses the project venv if present, otherwise falls back to python3 on PATH.
+set -e
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+if [ -x "$REPO_ROOT/venv/bin/python" ]; then
+    PY="$REPO_ROOT/venv/bin/python"
+else
+    PY=python3
+fi
+
+echo "pre-push: validating okf-civic-sample…"
+if ! "$PY" "$REPO_ROOT/scripts/validate.py"; then
+    echo "pre-push: validation failed — push aborted." >&2
+    exit 1
+fi

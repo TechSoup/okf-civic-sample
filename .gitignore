@@ -4,6 +4,7 @@
 # Python
 __pycache__/
 *.pyc
+venv/
 
 # Obsidian — keep shared config (app.json), ignore per-user workspace/cache
 .obsidian/workspace*.json

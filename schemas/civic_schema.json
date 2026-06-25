@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/marniewebb-ts/okf-civic-sample/schemas/civic_schema.json",
+  "title": "OKF Civic Profile (civic/0.2) record schema",
+  "description": "Validates core OKF fields plus the x-civic 0.2 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present.",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "okf_version": { "type": "string" },
+    "resource": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "timestamp": {},
+    "x-civic": { "$ref": "#/$defs/xcivic" }
+  },
+  "allOf": [
+    {
+      "comment": "Profile-scope rule: any record carrying an x-civic block must declare the profile version.",
+      "if": { "required": ["x-civic"] },
+      "then": { "properties": { "x-civic": { "required": ["profile"] } } }
+    },
+    {
+      "comment": "Offers carry an offer block and a vendor_url.",
+      "if": { "properties": { "type": { "const": "offer" } }, "required": ["type"] },
+      "then": {
+        "required": ["x-civic"],
+        "properties": {
+          "x-civic": {
+            "required": ["profile", "status", "offer", "provenance"],
+            "properties": { "provenance": { "required": ["vendor_url"] } }
+          }
+        }
+      }
+    },
+    {
+      "comment": "Meal sites carry location, meals, season and a range_id.",
+      "if": { "properties": { "type": { "const": "meal-site" } }, "required": ["type"] },
+      "then": {
+        "required": ["x-civic"],
+        "properties": {
+          "x-civic": {
+            "required": ["profile", "status", "location", "meals", "season", "operational_status", "provenance"],
+            "properties": { "provenance": { "required": ["range_id"] } }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "xcivic": {
+      "type": "object",
+      "properties": {
+        "profile": { "const": "civic/0.2" },
+        "status": { "enum": ["PROPOSED", "INITIALIZED", "ACTIVE", "ARCHIVED", "REJECTED"] },
+        "category": { "type": "string" },
+        "sub_category": { "type": "string" },
+        "capability": { "type": "string" },
+        "reason": { "type": "string" },
+        "operational_status": { "type": "string" },
+        "maintainer": { "type": "string" },
+        "serves": { "type": "string" },
+        "service_model": { "type": "string" },
+        "meals": { "type": "array", "items": { "type": "string" } },
+        "season": { "type": "object" },
+        "location": { "type": "object" },
+        "offer": {
+          "type": "object",
+          "required": ["type", "summary"],
+          "properties": {
+            "type": { "type": "string" },
+            "summary": { "type": "string" }
+          }
+        },
+        "eligibility": {
+          "type": "object",
+          "properties": {
+            "org_types": { "type": "array" },
+            "regions": { "type": "array" },
+            "ntee_codes": { "type": "array" },
+            "rules": { "type": "string" }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "source": { "type": "string" },
+            "vendor_url": { "type": "string" },
+            "range_id": { "type": "string" }
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/relation" }
+        }
+      },
+      "allOf": [
+        {
+          "comment": "A reason is required to retain an ARCHIVED or REJECTED record.",
+          "if": { "properties": { "status": { "enum": ["ARCHIVED", "REJECTED"] } }, "required": ["status"] },
+          "then": { "required": ["reason"] }
+        }
+      ]
+    },
+    "relation": {
+      "type": "object",
+      "required": ["target", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "target": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["complements", "alternative"] },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

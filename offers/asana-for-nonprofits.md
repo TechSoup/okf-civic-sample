@@ -6,6 +6,7 @@ resource: https://asana.com/nonprofit
 tags: [operations, project-management, productivity]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Operations
   capability: project-management
@@ -21,6 +22,16 @@ x-civic:
     last_audited: 2026-05-16
     vendor_url: https://asana.com/nonprofit
     source: "TechSoup VKB sample — full expert guidance held in the private VKB"
+  relations:
+    - target: google-workspace-for-nonprofits.md
+      type: complements
+      note: "productivity suite"
+    - target: buffer-for-nonprofits.md
+      type: complements
+      note: "social-media management"
+    - target: data-commons.md
+      type: complements
+      note: "public data"
 ---
 
 # Asana for Nonprofits
@@ -34,4 +45,4 @@ Boards, lists, and timelines to track grants, coordinate volunteers, and manage 
 Open to US-based 501(c)(3) charities (verification required). Note the **US-only** availability — a good example of how eligibility varies offer to offer, which a recommender must respect.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite"), [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management"), and [Data Commons](data-commons.md "complements: public data") — distinct capabilities that work together.

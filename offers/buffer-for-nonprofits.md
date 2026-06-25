@@ -6,6 +6,7 @@ resource: https://buffer.com/nonprofits
 tags: [marketing, social-media, communications]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Communications
   sub_category: Marketing
@@ -21,6 +22,16 @@ x-civic:
     last_audited: 2026-05-16
     vendor_url: https://buffer.com/nonprofits
     source: "TechSoup VKB sample — full expert guidance held in the private VKB"
+  relations:
+    - target: google-workspace-for-nonprofits.md
+      type: complements
+      note: "productivity suite"
+    - target: data-commons.md
+      type: complements
+      note: "public data"
+    - target: asana-for-nonprofits.md
+      type: complements
+      note: "project management"
 ---
 
 # Buffer for Nonprofits
@@ -34,6 +45,6 @@ Half off all paid plans; includes the Buffer AI Assistant for post ideas and rew
 Open to registered 501(c)(3)s, international equivalents, and libraries.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite") and [Data Commons](data-commons.md "complements: public data") — distinct capabilities that work together.
+Part of a common nonprofit stack alongside [Google Workspace for Nonprofits](google-workspace-for-nonprofits.md "complements: productivity suite"), [Data Commons](data-commons.md "complements: public data"), and [Asana for Nonprofits](asana-for-nonprofits.md "complements: project management") — distinct capabilities that work together.
 
 > **Sample note:** full implementation and sustainability guidance live in the private VKB.

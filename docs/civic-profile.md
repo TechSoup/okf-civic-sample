@@ -8,7 +8,9 @@ timestamp: 2026-06-20T00:00:00Z
 
 # The Civic Profile (`x-civic`) — a proposed OKF extension for civil society
 
-**Status:** draft proposal, v0.1 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
+**Status:** draft proposal, v0.2 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
+
+> **v0.2 changes (additive, non-breaking).** Every record carrying an `x-civic` block now declares its profile version with `x-civic.profile: civic/0.2`, and offers/meal-sites carry a generated `x-civic.relations` list that mirrors their prose link-title edges. Both keys live under `x-civic`, so a v0.1 (or any plain OKF) consumer ignores them and still reads valid records.
 
 Core [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) is deliberately minimal — the only required field is `type`, and producers may add any keys. That minimalism is a feature. But the nonprofit/civil-society sector consistently needs a handful of the *same* things that core OKF leaves open. This profile gathers them into one namespaced, additive convention so different producers can interoperate.
 
@@ -24,6 +26,7 @@ It is offered as a **starting point for discussion** with the OKF community — 
 
 | Field | Purpose |
 |---|---|
+| `profile` | The profile version this record conforms to (`civic/0.2`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
 | `status` | Lifecycle: `PROPOSED` · `INITIALIZED` · `ACTIVE` · `ARCHIVED` · `REJECTED`. Only `INITIALIZED`/`ACTIVE` are "live"; `ARCHIVED`/`REJECTED` retain the record (and a reason) so mistakes aren't repeated. |
 | `category` | Human-facing grouping (e.g. Basic Needs, Legal, Digital Inclusion). |
 | `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." |
@@ -31,6 +34,7 @@ It is offered as a **starting point for discussion** with the OKF community — 
 | `operational_status` | Real-world state of the service (e.g. `operational`, `comingSoon`) — **distinct from `status`**. `status` describes the *knowledge record*; `operational_status` describes the *thing the record is about*. A site can be a valid `ACTIVE` record while `comingSoon` in reality. |
 | `provenance` | `last_audited` (date) and `source` on every record, plus a type-specific identifier — `range_id` for directory records, `vendor_url` for offers. Trust depends on freshness and traceability. |
 | `reason` | Required when `status` is `ARCHIVED` or `REJECTED` — the "looks like a discount/offer but isn't" record. |
+| `relations` | A machine-readable list of this record's typed edges, each `{target, type, note}`. **Generated from the prose link titles, not hand-maintained** (see below) — a YAML-parseable projection for consumers that don't parse markdown link titles. |
 
 ## Relationships as graph edges
 
@@ -46,6 +50,20 @@ Two civic edge types are used in this bundle, both grounded in `capability`:
 - **`complements`** — the targets provide *distinct* capabilities that work together as a stack. Used among the offers.
 
 Existing OKF consumers that ignore link titles still see valid links; tools that read them get typed edges. Shared `capability` values let a tool reason about substitution even where no explicit edge is written.
+
+### The prose links are the source of truth; `relations` is generated
+
+The link-title tokens in the document body are the **single, human-edited source of truth** for edges — this keeps the profile aligned with #101 rather than forking a parallel convention. For consumers that parse YAML but not markdown link titles, the same edges are mirrored into a structured `x-civic.relations` list:
+
+```yaml
+x-civic:
+  relations:
+    - target: martin-luther-king-jr-center.md   # the link's href
+      type: alternative                          # the link-title token
+      note: same free-summer-meals capability, nearby
+```
+
+`relations` is **derived, never hand-maintained**: `scripts/validate.py --write` regenerates it from the prose links, and a plain `scripts/validate.py` run fails if the two ever diverge. Edges are also expected to be **reciprocal** — if A links to B as an `alternative`/`complements`, B links back the same way — which the validator enforces.
 
 ## Relationship to Open Referral / HSDS
 

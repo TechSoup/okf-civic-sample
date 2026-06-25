@@ -6,6 +6,7 @@ resource: https://www.google.com/nonprofits/
 tags: [productivity, email, collaboration]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
+  profile: civic/0.2
   status: ACTIVE
   category: Infrastructure
   sub_category: Productivity
@@ -22,6 +23,16 @@ x-civic:
     last_audited: 2026-05-16
     vendor_url: https://www.google.com/nonprofits/
     source: "TechSoup VKB sample — full expert guidance held in the private VKB"
+  relations:
+    - target: data-commons.md
+      type: complements
+      note: "public data"
+    - target: buffer-for-nonprofits.md
+      type: complements
+      note: "social-media management"
+    - target: asana-for-nonprofits.md
+      type: complements
+      note: "project management"
 ---
 
 # Google Workspace for Nonprofits
@@ -35,6 +46,6 @@ Gmail, Docs, Drive, and Meet at no cost; unlimited users with 30GB of storage ea
 Open to registered charities (verification required). Excludes K–12 schools, universities, hospitals, and government entities, which have separate Google programs.
 
 ## Complementary tools
-Part of a common nonprofit stack alongside [Data Commons](data-commons.md "complements: public data") and [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management") — distinct capabilities that work together, not alternatives.
+Part of a common nonprofit stack alongside [Data Commons](data-commons.md "complements: public data"), [Buffer for Nonprofits](buffer-for-nonprofits.md "complements: social-media management"), and [Asana for Nonprofits](asana-for-nonprofits.md "complements: project management") — distinct capabilities that work together, not alternatives.
 
 > **Sample note:** implementation prerequisites (domain/DNS), security posture, and sustainability guidance live in the full (private) VKB.
