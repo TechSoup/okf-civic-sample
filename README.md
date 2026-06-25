@@ -13,7 +13,7 @@ A small, open **reference bundle** showing how civil-society knowledge — commu
 
 It is also a working **Obsidian vault**: clone it, open the folder in [Obsidian](https://obsidian.md), and you can read, link, and explore the knowledge the same way a human maintainer would. The format is just markdown + YAML — no database, no platform, no lock-in.
 
-> **This is a sample, not a catalog.** The meal-site records are a real sample from [Range](https://www.rangeapp.org/) (Caravan Studios / TechSoup); the offers are an abstracted sample from TechSoup's Verbose Knowledge Base. The point is the *method* and the *shape* — not the full corpus.
+> **This is a sample, not a catalog.** The meal-site records are a real sample from [Range](https://www.rangeapp.org/) (Caravan Studios, a division of TechSoup); the offers are an abstracted sample from TechSoup's Verbose Knowledge Base. The point is the *method* and the *shape* — not the full corpus.
 
 ## Why this exists
 
