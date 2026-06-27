@@ -6,7 +6,7 @@ resource: https://buffer.com/nonprofits
 tags: [marketing, social-media, communications]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.2
+  profile: civic/0.3
   status: ACTIVE
   category: Communications
   sub_category: Marketing
@@ -15,9 +15,9 @@ x-civic:
     type: Discount
     summary: "50% off all paid plans for social-media scheduling, analytics, and engagement."
   eligibility:
-    org_types: [Nonprofit, Library]
+    org_types: [EA040000]   # PCS OrgType: Public charities (qualifying libraries included)
     regions: [ALL]
-    ntee_codes: [ALL]
+    pcs_subject: [ALL]      # PCS Subject (Candid); ALL = no subject restriction
   provenance:
     last_audited: 2026-05-16
     vendor_url: https://buffer.com/nonprofits

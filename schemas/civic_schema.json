@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/marniewebb-ts/okf-civic-sample/schemas/civic_schema.json",
-  "title": "OKF Civic Profile (civic/0.2) record schema",
-  "description": "Validates core OKF fields plus the x-civic 0.2 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present.",
+  "title": "OKF Civic Profile (civic/0.3) record schema",
+  "description": "Validates core OKF fields plus the x-civic 0.3 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present.",
   "type": "object",
   "required": ["type"],
   "properties": {
@@ -52,7 +52,7 @@
     "xcivic": {
       "type": "object",
       "properties": {
-        "profile": { "const": "civic/0.2" },
+        "profile": { "const": "civic/0.3" },
         "status": { "enum": ["PROPOSED", "INITIALIZED", "ACTIVE", "ARCHIVED", "REJECTED"] },
         "category": { "type": "string" },
         "sub_category": { "type": "string" },
@@ -78,7 +78,7 @@
           "properties": {
             "org_types": { "type": "array" },
             "regions": { "type": "array" },
-            "ntee_codes": { "type": "array" },
+            "pcs_subject": { "type": "array" },
             "rules": { "type": "string" }
           }
         },
@@ -109,7 +109,7 @@
       "additionalProperties": false,
       "properties": {
         "target": { "type": "string", "minLength": 1 },
-        "type": { "enum": ["complements", "alternative"] },
+        "type": { "enum": ["complements", "alternative", "conflicts", "requires", "related", "learn-with"] },
         "note": { "type": "string" }
       }
     }

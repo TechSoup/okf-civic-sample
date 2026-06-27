@@ -21,13 +21,34 @@ frontmatter, the `type` field, `okf_version`, index files, and link-based graph
 edges) that this sample conforms to. The `x-civic` profile and all sample
 content in this bundle are original works by TechSoup.
 
+-----------------------------------------------------------------------------
+
+The civic/0.3 profile recommends Candid's Philanthropy Classification System
+(PCS) as the controlled vocabulary for the `eligibility.pcs_subject` and
+`eligibility.org_types` fields. Any PCS codes, labels, or definitions carried
+in records using this profile are derived from:
+
+  Philanthropy Classification System (PCS)
+  Copyright Candid
+  Source:  https://taxonomy.candid.org
+  License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+           https://creativecommons.org/licenses/by/4.0/
+
+PCS is used under CC BY 4.0 with attribution to Candid; where this bundle maps
+or subsets PCS, those are modifications by TechSoup. PCS must not be placed
+behind a premium charge for the ability to use it.
+
 =============================================================================
 LICENSES SUMMARY
 =============================================================================
 
-  OKF specification (upstream)     Apache License 2.0  (Google LLC)
+  OKF specification (upstream)      Apache License 2.0  (Google LLC)
+  PCS taxonomy vocabulary           CC BY 4.0           (Candid)
   This bundle and civic profile     CC BY-SA 4.0        (TechSoup Global Network)
 
 Apache 2.0 is a permissive license that allows this bundle to be released
-under CC BY-SA 4.0, provided the above attribution is retained. See the
-LICENSE file at the root of this repository for the full CC BY-SA 4.0 text.
+under CC BY-SA 4.0, provided the above attribution is retained. CC BY 4.0
+likewise permits incorporating PCS into this CC BY-SA 4.0 bundle as long as
+Candid is credited and modifications are indicated; the PCS portion remains
+under CC BY 4.0. See the LICENSE file at the root of this repository for the
+full CC BY-SA 4.0 text.

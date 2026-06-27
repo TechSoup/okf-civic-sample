@@ -12,7 +12,7 @@ This is a reference bundle and an open invitation. Two kinds of contribution are
 
 ## Validating the bundle
 
-This repo ships a validator (`scripts/validate.py`) that checks frontmatter, conformance to [`schemas/civic_schema.json`](schemas/civic_schema.json), the `civic/0.2` profile declaration, and that each record's `x-civic.relations` matches its prose link-title edges (reciprocally).
+This repo ships a validator (`scripts/validate.py`) that checks frontmatter, conformance to [`schemas/civic_schema.json`](schemas/civic_schema.json), the `civic/0.3` profile declaration, and that each record's `x-civic.relations` matches its prose link-title edges (reciprocally).
 
 ```sh
 python3 -m venv venv

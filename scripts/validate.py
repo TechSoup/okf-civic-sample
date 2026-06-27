@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Validate okf-civic-sample records against the civic/0.2 profile.
+"""Validate okf-civic-sample records against the civic/0.3 profile.
 
 Checks, per record:
   1. Frontmatter is present and parseable.
-  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.2).
-  3. Every record carrying an x-civic block declares profile == civic/0.2.
-  4. Edge equivalence: the typed link-title edges in the prose
-     (`"complements: ..."` / `"alternative: ..."`) match x-civic.relations exactly.
-  5. Reciprocity: if A links to B with an edge type, B links back to A with the
-     same type.
+  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.3).
+  3. Every record carrying an x-civic block declares profile == civic/0.3.
+  4. Edge equivalence: the typed link-title edges in the prose (e.g.
+     `"complements: ..."`, `"requires: ..."`) match x-civic.relations exactly.
+  5. Reciprocity: if A links to B with a SYMMETRIC edge type, B links back to A
+     with the same type. Directional edges (e.g. `requires`) are exempt — only
+     the target's existence is checked.
 
 Link titles per OKF issue #101 are the authoritative, human-edited source of
 edges; x-civic.relations is a generated projection of them.
@@ -34,9 +35,13 @@ try:
 except ImportError:
     sys.exit("jsonschema is required: pip install -r requirements.txt")
 
-PROFILE = "civic/0.2"
-EDGE_TYPES = {"alternative", "complements"}
-RELATION_TYPES = {"offer", "meal-site"}  # types that carry a relations list
+PROFILE = "civic/0.3"
+EDGE_TYPES = {"alternative", "complements", "conflicts", "requires", "related", "learn-with"}
+# Symmetric edges must be reciprocated (A->B implies B->A). Directional edges
+# are one-way by nature (A requires B does not mean B requires A), so the
+# reciprocity check is skipped for them — only target existence is verified.
+DIRECTIONAL_EDGE_TYPES = {"requires"}
+RELATION_TYPES = {"offer", "meal-site", "course"}  # types that carry a relations list
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD_DIRS = ["offers", "resources", "docs"]
@@ -168,6 +173,8 @@ def validate(paths):
                 if target is None:
                     errs.append(f"edge target not found: {e['type']} -> {e['target']}")
                     continue
+                if e["type"] in DIRECTIONAL_EDGE_TYPES:
+                    continue  # one-way edge: target exists, no reciprocity expected
                 back = {(b["target"], b["type"]) for b in target["edges"]}
                 expected = (os.path.basename(r["path"]), e["type"])
                 if expected not in back:

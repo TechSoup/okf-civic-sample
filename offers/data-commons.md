@@ -6,7 +6,7 @@ resource: https://datacommons.org/
 tags: [data, open-data, research, public-good]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.2
+  profile: civic/0.3
   status: ACTIVE
   category: Data & Research
   capability: public-data
@@ -16,7 +16,7 @@ x-civic:
   eligibility:
     org_types: [ALL]
     regions: [ALL]
-    ntee_codes: [ALL]
+    pcs_subject: [ALL]   # PCS Subject (Candid); ALL = no subject restriction
   provenance:
     last_audited: 2026-05-26
     vendor_url: https://datacommons.org/

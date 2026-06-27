@@ -19,7 +19,7 @@ x-civic:
 
 This fixture deliberately violates the profile, in several ways at once:
 
-- `x-civic.profile` is `civic/0.1`, not `civic/0.2`.
+- `x-civic.profile` is `civic/0.1`, not `civic/0.3`.
 - As an `offer` it is missing the required `offer` block and `provenance.vendor_url`.
 - It declares an `x-civic.relations` edge that has no matching prose link title (and points at a file that does not exist).
 
