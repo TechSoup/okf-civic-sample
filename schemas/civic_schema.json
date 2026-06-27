@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/marniewebb-ts/okf-civic-sample/schemas/civic_schema.json",
+  "$id": "https://github.com/TechSoup/okf-civic-sample/schemas/civic_schema.json",
   "title": "OKF Civic Profile (civic/0.4) record schema",
   "description": "Validates core OKF fields plus the x-civic 0.4 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present.",
   "type": "object",
