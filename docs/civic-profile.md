@@ -8,8 +8,10 @@ timestamp: 2026-06-20T00:00:00Z
 
 # The Civic Profile (`x-civic`) — a proposed OKF extension for civil society
 
-**Status:** draft proposal, v0.3 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
+**Status:** draft proposal, v0.4 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
 
+> **v0.4 changes.** One change from v0.3, in eligibility: the flat `eligibility.org_types` field is replaced by **`eligibility.eligible_audiences`** — an OR-list of *audience* keys, each resolving (via a producer-local audience registry shipped with the bundle) to an `(org_type AND subject)` PCS clause. A record is eligible to a user matching **any** audience, so one record can serve several distinct audiences at once (e.g. nonprofits **or** public libraries) — which a single flat `(org_types AND pcs_subject)` pair could not express. `eligibility.pcs_subject` remains as an optional, independent mission restriction. The interoperable contract is the *resolved clauses*, so a conformant bundle publishes its audience registry. This is the one breaking change in 0.4.
+>
 > **v0.3 changes.** Two changes from v0.2: (1) the typed-edge vocabulary expands from `complements`/`alternative` to also include `conflicts`, `requires`, `related`, and `learn-with` (see "Relationships as graph edges"); `requires` is **directional** (one-way), the rest are symmetric/reciprocal. (2) Subject and organization-type eligibility now use **Candid's Philanthropy Classification System (PCS)** as the recommended controlled vocabulary — the `eligibility.ntee_codes` key is renamed to `eligibility.pcs_subject`, and `eligibility.org_types` values are PCS OrgType codes. The vocabulary change is the one breaking change in 0.3; everything else remains additive and namespaced under `x-civic`.
 >
 > **v0.2 (prior).** Introduced `x-civic.profile` on every record carrying an `x-civic` block, and a generated `x-civic.relations` list mirroring the prose link-title edges. Both live under `x-civic`, so a v0.1 (or any plain OKF) consumer ignores them and still reads valid records.
@@ -28,11 +30,11 @@ It is offered as a **starting point for discussion** with the OKF community — 
 
 | Field | Purpose |
 |---|---|
-| `profile` | The profile version this record conforms to (`civic/0.3`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
+| `profile` | The profile version this record conforms to (`civic/0.4`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
 | `status` | Lifecycle: `PROPOSED` · `INITIALIZED` · `ACTIVE` · `ARCHIVED` · `REJECTED`. Only `INITIALIZED`/`ACTIVE` are "live"; `ARCHIVED`/`REJECTED` retain the record (and a reason) so mistakes aren't repeated. |
 | `category` | Human-facing grouping (e.g. Basic Needs, Legal, Digital Inclusion). |
 | `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." |
-| `eligibility` | Who qualifies: `org_types` (PCS OrgType codes), `regions`, `pcs_subject` (PCS Subject codes), `rules`, etc. Subject/org-type vocabularies are Candid's PCS (see "Eligibility vocabularies" below). The sentinel `ALL` means "no restriction on this axis." |
+| `eligibility` | Who qualifies: `eligible_audiences` (an OR-list of producer-local *audience* keys, each resolving to an *(org_type AND subject)* Candid PCS clause — see "Eligibility vocabularies" below), `regions`, optional `pcs_subject` (independent mission restriction), `rules`. The sentinel `ALL` means "no restriction on a facet." |
 | `operational_status` | Real-world state of the service (e.g. `operational`, `comingSoon`) — **distinct from `status`**. `status` describes the *knowledge record*; `operational_status` describes the *thing the record is about*. A site can be a valid `ACTIVE` record while `comingSoon` in reality. |
 | `provenance` | `last_audited` (date) and `source` on every record, plus a type-specific identifier — `range_id` for directory records, `vendor_url` for offers. Trust depends on freshness and traceability. |
 | `reason` | Required when `status` is `ARCHIVED` or `REJECTED` — the "looks like a discount/offer but isn't" record. |
@@ -46,7 +48,7 @@ Use normal markdown links in the body for referral partners, parent programs, an
 [Martin Luther King Jr. Center](martin-luther-king-jr-center.md "alternative: same free-summer-meals capability, nearby")
 ```
 
-The civic edge vocabulary (v0.3):
+The civic edge vocabulary (unchanged since v0.3):
 
 | Token | Meaning | Direction |
 |---|---|---|
@@ -75,14 +77,19 @@ x-civic:
 
 `relations` is **derived, never hand-maintained**: `scripts/validate.py --write` regenerates it from the prose links, and a plain `scripts/validate.py` run fails if the two ever diverge. Edges are also expected to be **reciprocal** — if A links to B as an `alternative`/`complements`, B links back the same way — which the validator enforces.
 
-## Eligibility vocabularies (PCS)
+## Eligibility vocabularies (audiences over PCS)
 
-As of v0.3, the civic profile recommends **Candid's Philanthropy Classification System (PCS)** as the controlled vocabulary for two eligibility axes:
+As of v0.4, eligibility is expressed as **audiences**. A record's `eligibility.eligible_audiences` is an **OR-list of audience keys**; a user qualifies if they match **any** one. Each audience resolves to an **(org_type AND subject)** predicate over two Candid PCS facets:
 
-- **`eligibility.pcs_subject`** — subject / field-of-work codes from the PCS **Subject** facet (e.g. `SA000000` = *Arts and culture*). Replaces the NTEE-specific `ntee_codes` of v0.2. PCS is the modern successor to NTEE and ships an NTEE→PCS crosswalk, so existing NTEE-coded data can be migrated.
-- **`eligibility.org_types`** — organization-type codes from the PCS **OrgType** facet (e.g. `EA040000` = *Public charities*).
+- **org_type** — PCS **OrgType** facet codes (e.g. `EB000000` = *Governments and agencies*).
+- **subject** — PCS **Subject** facet codes (e.g. `SH020400` = *Public libraries*).
 
-Codes are stored as opaque strings; a consumer resolves them to human labels via its own copy of the PCS taxonomy. The sentinel **`ALL`** on either axis means "no restriction on this axis." Other eligibility axes (`regions`, free-text `rules`) are **not** PCS — geography in particular has no PCS facet.
+So the audience `public_library` = *(OrgType: government) AND (Subject: public libraries)*, and an offer open to `[nonprofit, public_library]` is eligible to a nonprofit of any mission **OR** a public library. This OR-of-(AND) shape is the v0.4 change: it expresses an offer open to more than one distinct audience, which the flat `org_types` + `pcs_subject` of v0.3 could not.
+
+**Audience keys are producer-local; the resolved clauses are the interoperable contract.** Two producers may use different keys for the same `(org_type, subject)` clause, so tools must not interoperate on key strings. A conformant bundle therefore **ships its audience registry** — see [`registry/audiences.json`](../registry/audiences.json) in this sample — mapping each key to its clause, so any consumer can resolve `eligible_audiences` without external knowledge.
+
+- **`eligibility.pcs_subject`** (optional) — an independent, offer-level **mission restriction** from the PCS **Subject** facet (e.g. `SA000000` = *Arts and culture*), ANDed on top of audience eligibility and distinct from an audience's own subject. Replaces the NTEE-specific `ntee_codes` of v0.2 (PCS ships an NTEE→PCS crosswalk).
+- The sentinel **`ALL`** on either facet means "no restriction on that facet." Other axes (`regions`, free-text `rules`) are **not** PCS — geography in particular has no PCS facet.
 
 > **Attribution.** The Philanthropy Classification System is © Candid, made available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: <https://taxonomy.candid.org>. A producer using PCS codes must credit Candid and indicate any modifications; it must not charge users a premium for the ability to use PCS. This profile recommends — but does not mandate — PCS; a bundle MAY use another subject/org-type vocabulary, but interoperating tools expect PCS.
 

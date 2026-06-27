@@ -6,7 +6,7 @@ resource: https://datacommons.org/
 tags: [data, open-data, research, public-good]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.3
+  profile: civic/0.4
   status: ACTIVE
   category: Data & Research
   capability: public-data
@@ -14,7 +14,7 @@ x-civic:
     type: Free / Open Source
     summary: "Free, open access to a unified knowledge graph of public datasets, queryable via web, API, and notebooks."
   eligibility:
-    org_types: [ALL]
+    eligible_audiences: [everyone]
     regions: [ALL]
     pcs_subject: [ALL]   # PCS Subject (Candid); ALL = no subject restriction
   provenance:

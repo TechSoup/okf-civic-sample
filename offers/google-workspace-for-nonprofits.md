@@ -6,7 +6,7 @@ resource: https://www.google.com/nonprofits/
 tags: [productivity, email, collaboration]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.3
+  profile: civic/0.4
   status: ACTIVE
   category: Infrastructure
   sub_category: Productivity
@@ -15,7 +15,7 @@ x-civic:
     type: Free (nonprofit tier)
     summary: "Gmail, Docs, Drive, and Meet at no cost; unlimited users with 30GB storage each and shared drives."
   eligibility:
-    org_types: [EA040000]   # PCS OrgType: Public charities
+    eligible_audiences: [public_charity]   # OR-list of audience keys; resolves via registry/audiences.json
     regions: [ALL]
     pcs_subject: [ALL]      # PCS Subject (Candid); ALL = no subject restriction
     rules: "Must be a registered charity; verification required. Excludes K–12 schools, universities, hospitals, and government (separate Google programs)."

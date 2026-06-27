@@ -6,7 +6,7 @@ resource: https://asana.com/nonprofit
 tags: [operations, project-management, productivity]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.3
+  profile: civic/0.4
   status: ACTIVE
   category: Operations
   capability: project-management
@@ -14,7 +14,7 @@ x-civic:
     type: Discount
     summary: "50% off Premium and Business tiers — boards, lists, and timelines for tracking grants, volunteers, and tasks."
   eligibility:
-    org_types: [EA040000]   # PCS OrgType: Public charities
+    eligible_audiences: [public_charity]   # OR-list of audience keys; resolves via registry/audiences.json
     regions: [US]
     pcs_subject: [ALL]      # PCS Subject (Candid); ALL = no subject restriction
     rules: "Verification required. Excludes academic institutions, mutual organizations, and legislative/political entities."

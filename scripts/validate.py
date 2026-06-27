@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Validate okf-civic-sample records against the civic/0.3 profile.
+"""Validate okf-civic-sample records against the civic/0.4 profile.
 
 Checks, per record:
   1. Frontmatter is present and parseable.
-  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.3).
-  3. Every record carrying an x-civic block declares profile == civic/0.3.
+  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.4).
+  3. Every record carrying an x-civic block declares profile == civic/0.4.
   4. Edge equivalence: the typed link-title edges in the prose (e.g.
      `"complements: ..."`, `"requires: ..."`) match x-civic.relations exactly.
   5. Reciprocity: if A links to B with a SYMMETRIC edge type, B links back to A
@@ -35,7 +35,7 @@ try:
 except ImportError:
     sys.exit("jsonschema is required: pip install -r requirements.txt")
 
-PROFILE = "civic/0.3"
+PROFILE = "civic/0.4"
 EDGE_TYPES = {"alternative", "complements", "conflicts", "requires", "related", "learn-with"}
 # Symmetric edges must be reciprocated (A->B implies B->A). Directional edges
 # are one-way by nature (A requires B does not mean B requires A), so the

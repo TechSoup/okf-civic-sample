@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "description": "Sample audience registry for the civic/0.4 eligibility model. An audience is an (org_type AND subject) predicate over the Candid PCS facets; a record's `eligibility.eligible_audiences` is an OR-list of these keys (eligible if a user matches ANY one, AND within each). Audience KEYS are producer-local — the interoperable contract is the resolved (org_type, subject) clauses, which a producer ships alongside its records (this file) so any consumer can resolve `eligible_audiences` without external knowledge. `ALL` is a wildcard on a facet.",
+    "profile": "civic/0.4",
+    "facet_source": "Candid Philanthropy Classification System (PCS) — org_type = OrgType facet, pcs_subject = Subject facet (CC BY 4.0, https://taxonomy.candid.org)"
+  },
+  "audiences": {
+    "everyone": {
+      "label": "Everyone",
+      "org_types": ["ALL"],
+      "pcs_subject": ["ALL"]
+    },
+    "nonprofit": {
+      "label": "Nonprofit",
+      "org_types": ["EA000000"],
+      "pcs_subject": ["ALL"]
+    },
+    "public_charity": {
+      "label": "Public charity",
+      "org_types": ["EA040000"],
+      "pcs_subject": ["ALL"]
+    },
+    "public_library": {
+      "label": "Public library",
+      "org_types": ["EB000000"],
+      "pcs_subject": ["SH020400"]
+    }
+  }
+}
