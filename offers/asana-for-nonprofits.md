@@ -6,7 +6,7 @@ resource: https://asana.com/nonprofit
 tags: [operations, project-management, productivity]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.4
+  profile: civic/0.5
   status: ACTIVE
   category: Operations
   capability: project-management

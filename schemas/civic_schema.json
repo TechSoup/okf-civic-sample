@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/TechSoup/okf-civic-sample/schemas/civic_schema.json",
-  "title": "OKF Civic Profile (civic/0.4) record schema",
-  "description": "Validates core OKF fields plus the x-civic 0.4 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present.",
+  "title": "OKF Civic Profile (civic/0.5) record schema",
+  "description": "Validates core OKF fields plus the x-civic 0.5 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present. civic/0.5 adds federation: bundle namespace/base_uri and federated relation targets (CURIE namespace:slug).",
   "type": "object",
   "required": ["type"],
   "properties": {
@@ -52,11 +52,13 @@
     "xcivic": {
       "type": "object",
       "properties": {
-        "profile": { "const": "civic/0.4" },
+        "profile": { "const": "civic/0.5" },
         "status": { "enum": ["PROPOSED", "INITIALIZED", "ACTIVE", "ARCHIVED", "REJECTED"] },
         "category": { "type": "string" },
         "sub_category": { "type": "string" },
         "capability": { "type": "string" },
+        "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+        "base_uri": { "type": "string" },
         "reason": { "type": "string" },
         "operational_status": { "type": "string" },
         "maintainer": { "type": "string" },

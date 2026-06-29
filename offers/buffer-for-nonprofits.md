@@ -6,7 +6,7 @@ resource: https://buffer.com/nonprofits
 tags: [marketing, social-media, communications]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.4
+  profile: civic/0.5
   status: ACTIVE
   category: Communications
   sub_category: Marketing

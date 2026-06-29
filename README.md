@@ -4,7 +4,7 @@
 
 ![license: CC BY-SA 4.0](https://img.shields.io/badge/license-CC_BY--SA_4.0-blue)
 ![format: OKF v0.1](https://img.shields.io/badge/format-OKF_v0.1-success)
-![civic profile: v0.1](https://img.shields.io/badge/civic_profile-v0.1-orange)
+![civic profile: v0.5](https://img.shields.io/badge/civic_profile-v0.5-orange)
 ![maintained by TechSoup Global Network](https://img.shields.io/badge/maintained_by-TechSoup_Global_Network-7B2FBE)
 
 **[Learn more about TechSoup](https://about.techsoup.org/) · [Support TechSoup](https://www.every.org/techsoup)**

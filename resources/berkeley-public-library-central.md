@@ -6,7 +6,7 @@ resource: https://www.rangeapp.org/
 tags: [summer-meals, food, youth, library]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.4
+  profile: civic/0.5
   status: ACTIVE
   category: Food
   capability: free-summer-meals

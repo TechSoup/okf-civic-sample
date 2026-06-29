@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "description": "Federated peer registry (civic/0.5). Each key is a bundle namespace; a relation target written as the CURIE 'namespace:slug' resolves through here. Resolution is offline by default: tooling validates that a foreign edge's namespace is registered (a warning if not), and may optionally fetch a peer's published feed to confirm a target and pull its title. Namespaces are producer-declared; this registry — shipped with the bundle — is the interoperable contract, so a consumer needs no central authority to resolve a cross-bundle edge.",
+    "profile": "civic/0.5"
+  },
+  "peers": {
+    "civic-sample": {
+      "label": "OKF Civic Sample",
+      "base_uri": "https://github.com/TechSoup/okf-civic-sample/",
+      "okf_version": "0.1",
+      "self": true
+    },
+    "techsoup": {
+      "label": "TechSoup Verbose Knowledge Base",
+      "base_uri": "https://vkb.techsoup.org/",
+      "products_json_url": "https://vkb.techsoup.org/products.json",
+      "okf_version": "0.1"
+    }
+  }
+}

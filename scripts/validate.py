@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate okf-civic-sample records against the civic/0.4 profile.
+"""Validate okf-civic-sample records against the civic/0.5 profile.
 
 Checks, per record:
   1. Frontmatter is present and parseable.
@@ -35,7 +35,7 @@ try:
 except ImportError:
     sys.exit("jsonschema is required: pip install -r requirements.txt")
 
-PROFILE = "civic/0.4"
+PROFILE = "civic/0.5"
 EDGE_TYPES = {"alternative", "complements", "conflicts", "requires", "related", "learn-with"}
 # Symmetric edges must be reciprocated (A->B implies B->A). Directional edges
 # are one-way by nature (A requires B does not mean B requires A), so the

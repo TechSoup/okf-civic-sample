@@ -6,7 +6,7 @@ resource: https://www.google.com/nonprofits/
 tags: [productivity, email, collaboration]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.4
+  profile: civic/0.5
   status: ACTIVE
   category: Infrastructure
   sub_category: Productivity

@@ -6,8 +6,10 @@ description: An illustrative Open Knowledge Format bundle for civil-society reso
 tags: [civil-society, nonprofit, okf, sample]
 timestamp: 2026-06-20T00:00:00Z
 x-civic:
-  profile: civic/0.4
+  profile: civic/0.5
   maintainer: TechSoup
+  namespace: civic-sample
+  base_uri: https://github.com/TechSoup/okf-civic-sample/
 ---
 
 # Civic Knowledge Sample

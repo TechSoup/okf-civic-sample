@@ -8,8 +8,10 @@ timestamp: 2026-06-20T00:00:00Z
 
 # The Civic Profile (`x-civic`) — a proposed OKF extension for civil society
 
-**Status:** draft proposal, v0.4 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
+**Status:** draft proposal, v0.5 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
 
+> **v0.5 changes.** All additive (no breaking changes) — civic/0.5 adds **federation**, so independently-maintained bundles form one navigable graph. (1) **Global identity:** a bundle declares `x-civic.namespace` (and `base_uri`) in its root; every record's global id is `namespace:slug`. (2) **Federated edges:** a `relations` `target` may be a CURIE `namespace:slug` pointing into *another* bundle; such edges are tagged `external` and are not reciprocated (you can't write into a peer's files). A bundle ships a **peer registry** (`registry/peers.json`) mapping each namespace to its location. (3) **Capability as join key:** `capability` is the cross-bundle substitution axis and SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`), the same "ship your registry" pattern as audiences. See "Federation" below.
+>
 > **v0.4 changes.** One change from v0.3, in eligibility: the flat `eligibility.org_types` field is replaced by **`eligibility.eligible_audiences`** — an OR-list of *audience* keys, each resolving (via a producer-local audience registry shipped with the bundle) to an `(org_type AND subject)` PCS clause. A record is eligible to a user matching **any** audience, so one record can serve several distinct audiences at once (e.g. nonprofits **or** public libraries) — which a single flat `(org_types AND pcs_subject)` pair could not express. `eligibility.pcs_subject` remains as an optional, independent mission restriction. The interoperable contract is the *resolved clauses*, so a conformant bundle publishes its audience registry. This is the one breaking change in 0.4.
 >
 > **v0.3 changes.** Two changes from v0.2: (1) the typed-edge vocabulary expands from `complements`/`alternative` to also include `conflicts`, `requires`, `related`, and `learn-with` (see "Relationships as graph edges"); `requires` is **directional** (one-way), the rest are symmetric/reciprocal. (2) Subject and organization-type eligibility now use **Candid's Philanthropy Classification System (PCS)** as the recommended controlled vocabulary — the `eligibility.ntee_codes` key is renamed to `eligibility.pcs_subject`, and `eligibility.org_types` values are PCS OrgType codes. The vocabulary change is the one breaking change in 0.3; everything else remains additive and namespaced under `x-civic`.
@@ -30,15 +32,15 @@ It is offered as a **starting point for discussion** with the OKF community — 
 
 | Field | Purpose |
 |---|---|
-| `profile` | The profile version this record conforms to (`civic/0.4`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
+| `profile` | The profile version this record conforms to (`civic/0.5`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
 | `status` | Lifecycle: `PROPOSED` · `INITIALIZED` · `ACTIVE` · `ARCHIVED` · `REJECTED`. Only `INITIALIZED`/`ACTIVE` are "live"; `ARCHIVED`/`REJECTED` retain the record (and a reason) so mistakes aren't repeated. |
 | `category` | Human-facing grouping (e.g. Basic Needs, Legal, Digital Inclusion). |
-| `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." |
+| `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." As of v0.5 this is the **cross-bundle join key**: an agent finds a capability one bundle lacks by matching the same value in a federated peer. It SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`). |
 | `eligibility` | Who qualifies: `eligible_audiences` (an OR-list of producer-local *audience* keys, each resolving to an *(org_type AND subject)* Candid PCS clause — see "Eligibility vocabularies" below), `regions`, optional `pcs_subject` (independent mission restriction), `rules`. The sentinel `ALL` means "no restriction on a facet." |
 | `operational_status` | Real-world state of the service (e.g. `operational`, `comingSoon`) — **distinct from `status`**. `status` describes the *knowledge record*; `operational_status` describes the *thing the record is about*. A site can be a valid `ACTIVE` record while `comingSoon` in reality. |
 | `provenance` | `last_audited` (date) and `source` on every record, plus a type-specific identifier — `range_id` for directory records, `vendor_url` for offers. Trust depends on freshness and traceability. |
 | `reason` | Required when `status` is `ARCHIVED` or `REJECTED` — the "looks like a discount/offer but isn't" record. |
-| `relations` | A machine-readable list of this record's typed edges, each `{target, type, note}`. **Generated from the prose link titles, not hand-maintained** (see below) — a YAML-parseable projection for consumers that don't parse markdown link titles. |
+| `relations` | A machine-readable list of this record's typed edges, each `{target, type, note}`. **Local** edges are generated from the prose link titles, not hand-maintained (see below). **Federated** edges (v0.5) — whose `target` is a CURIE `namespace:slug` for another bundle — are authored directly here (there is no local prose link to derive them from) and tagged `external`. |
 
 ## Relationships as graph edges
 
@@ -92,6 +94,36 @@ So the audience `public_library` = *(OrgType: government) AND (Subject: public l
 - The sentinel **`ALL`** on either facet means "no restriction on that facet." Other axes (`regions`, free-text `rules`) are **not** PCS — geography in particular has no PCS facet.
 
 > **Attribution.** The Philanthropy Classification System is © Candid, made available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: <https://taxonomy.candid.org>. A producer using PCS codes must credit Candid and indicate any modifications; it must not charge users a premium for the ability to use PCS. This profile recommends — but does not mandate — PCS; a bundle MAY use another subject/org-type vocabulary, but interoperating tools expect PCS.
+
+## Federation (v0.5)
+
+A single bundle is one folder of files. Federation lets independently-maintained bundles form one graph an agent can traverse — the way [Data Commons](https://datacommons.org) federates statistical data over shared entity IDs. It rests on three pieces.
+
+**1. Global identity.** A bundle declares its prefix in the root document:
+
+```yaml
+x-civic:
+  namespace: civic-sample
+  base_uri: https://github.com/TechSoup/okf-civic-sample/
+```
+
+Locally, identity is still the file's slug. Globally it is `namespace:slug`. The namespace must match `^[a-z][a-z0-9_-]*$` and be unique among federating peers.
+
+**2. Federated edges.** Local edges are authored as prose link-titles (#101) and reciprocated within the bundle. A **federated** edge points into another bundle, so there is no local file to link — it is authored directly in `x-civic.relations` with a CURIE target:
+
+```yaml
+x-civic:
+  relations:
+    - target: "techsoup:salesforce"     # a record in the TechSoup VKB
+      type: alternative
+      note: "Same CRM capability"
+```
+
+Because the target lives in a peer, a federated edge is **not reciprocated** (we can't edit the peer's files) and is tagged `external` by tooling. The peer namespace resolves through a **peer registry**, `registry/peers.json`, mapping each namespace to its `base_uri` / published feed. Resolution is **offline by default**: tools validate that the namespace is registered, but need not fetch the peer to produce a valid bundle.
+
+**3. Capability as the join axis.** `capability` (above) is what makes "find what my bundle lacks in a peer's" a concrete query: group records by capability across the federated graph. It SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`), the same "the resolved value is the contract, so ship your registry" pattern used for audiences.
+
+> **Interop note.** As with audience keys, namespaces are producer-declared; the interoperable contract is the *registry* a bundle ships. A consumer reading two bundles resolves a CURIE edge by looking the namespace up in `peers.json` — no central authority required.
 
 ## Relationship to Open Referral / HSDS
 
