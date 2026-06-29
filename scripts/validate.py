@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """Validate okf-civic-sample records against the civic/0.5 profile.
 
-Checks, per record:
+Checks, per concept record:
   1. Frontmatter is present and parseable.
-  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.4).
-  3. Every record carrying an x-civic block declares profile == civic/0.4.
+  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.5).
+  3. Every record carrying an x-civic block declares profile == civic/0.5.
   4. Edge equivalence: the typed link-title edges in the prose (e.g.
      `"complements: ..."`, `"requires: ..."`) match x-civic.relations exactly.
   5. Reciprocity: if A links to B with a SYMMETRIC edge type, B links back to A
      with the same type. Directional edges (e.g. `requires`) are exempt — only
      the target's existence is checked.
+
+Reserved filenames (index.md, log.md; OKF §3.1) are not concept records and
+are exempt from the checks above. Index files are checked separately for the
+§6/§11 rule: an index carries no frontmatter, except the bundle-root index.
 
 Link titles per OKF issue #101 are the authoritative, human-edited source of
 edges; x-civic.relations is a generated projection of them.
@@ -45,7 +49,13 @@ RELATION_TYPES = {"offer", "meal-site", "course"}  # types that carry a relation
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD_DIRS = ["offers", "resources", "docs"]
-ROOT_RECORDS = ["index.md"]
+ROOT_RECORDS = []
+# Reserved OKF filenames (spec §3.1) are not concept records: index.md is a
+# directory listing (§6) and log.md is an update history (§7). They are exempt
+# from the concept-record checks below and validated separately (see
+# check_index_files), which enforces §6/§11: index files carry no frontmatter
+# except the bundle root.
+RESERVED = {"index.md", "log.md"}
 SCHEMA_PATH = os.path.join(ROOT, "schemas", "civic_schema.json")
 FIXTURE_DIR = os.path.join(ROOT, "schemas", "fixtures")
 
@@ -58,13 +68,46 @@ TITLED_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\s+\"([^\"]*)\"\)")
 # discovery & parsing
 # --------------------------------------------------------------------------- #
 def discover_records():
+    """Concept records only — reserved filenames (index.md, log.md) excluded."""
     paths = [os.path.join(ROOT, p) for p in ROOT_RECORDS]
     for d in RECORD_DIRS:
         for dirpath, _, files in os.walk(os.path.join(ROOT, d)):
             for f in sorted(files):
-                if f.endswith(".md"):
+                if f.endswith(".md") and f not in RESERVED:
                     paths.append(os.path.join(dirpath, f))
     return [p for p in paths if os.path.exists(p)]
+
+
+def discover_index_files():
+    """Every index.md in the bundle (root + record dirs)."""
+    paths = []
+    root_index = os.path.join(ROOT, "index.md")
+    if os.path.exists(root_index):
+        paths.append(root_index)
+    for d in RECORD_DIRS:
+        for dirpath, _, files in os.walk(os.path.join(ROOT, d)):
+            if "index.md" in files:
+                paths.append(os.path.join(dirpath, "index.md"))
+    return paths
+
+
+def check_index_files(paths):
+    """Enforce OKF §6/§11: index files carry no frontmatter, except the
+    bundle-root index (which may, to declare okf_version). Returns
+    path -> list of error strings."""
+    root_index = os.path.abspath(os.path.join(ROOT, "index.md"))
+    results = {}
+    for p in paths:
+        with open(p, encoding="utf-8") as fh:
+            fm_text, _ = split_frontmatter(fh.read())
+        errs = []
+        if fm_text is not None and os.path.abspath(p) != root_index:
+            errs.append(
+                "index.md must not contain frontmatter (OKF §6/§11); "
+                "only the bundle-root index may"
+            )
+        results[rel(p)] = errs
+    return results
 
 
 def split_frontmatter(text):
@@ -317,7 +360,9 @@ def main():
             print("No changes (relations already up to date).")
         sys.exit(0)
 
-    sys.exit(0 if report(validate(paths)) else 1)
+    results = validate(paths)
+    results.update(check_index_files(discover_index_files()))
+    sys.exit(0 if report(results) else 1)
 
 
 if __name__ == "__main__":
