@@ -1,26 +1,50 @@
 ---
-type: bundle
-okf_version: "0.1"
-title: Civic Knowledge Sample
-description: An illustrative Open Knowledge Format bundle for civil-society resources and the intelligence needed to use them.
-tags: [civil-society, nonprofit, okf, sample]
-timestamp: 2026-06-20T00:00:00Z
-x-civic:
-  profile: civic/0.5
-  maintainer: TechSoup
-  namespace: civic-sample
-  base_uri: https://github.com/TechSoup/okf-civic-sample/
+okf_version: "0.2"
 ---
 
-# Civic Knowledge Sample
+# Civic Knowledge Sample — collection listing
 
-This is the root of a sample [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) bundle. It demonstrates how civil-society knowledge can be represented as plain markdown files that humans and AI agents can both read.
+**⚠ Every organization in this collection is fabricated.** See [README.md](README.md), which is the canonical record for the collection.
 
-## Contents
+# Start here
 
-- [Resources](resources/index.md) — real summer meal sites (sampled from Range), each as an OKF concept document.
-- [Offers](offers/index.md) — sample nonprofit technology offers (from the VKB), showing the format generalizes.
-- [Civic profile](docs/civic-profile.md) — the proposed `x-civic` extension conventions.
-- [How nonprofits can use OKF](docs/how-nonprofits-can-use-okf.md) — the practical case and examples (211, resource directories, offer catalogs).
+* [README.md](README.md) - what this collection is, how to use it, and what is deliberately broken
+* [organizations/](organizations/README.md) - the fifteen organization bundles, all in one folder
+* [organizations/synthetic-frogtown-community-table/](organizations/synthetic-frogtown-community-table/index.md) - the worked reference bundle; read this one first
 
-> The meal-site records are a real sample from Range; the offers are an abstracted VKB sample. A representative slice, not the full data.
+# The specification
+
+* [docs/civic-profile.md](docs/civic-profile.md) - the `x-civic` civic profile, v0.6. Five required fields
+* [docs/use-cases.md](docs/use-cases.md) - what the graph makes answerable, with the queries written out
+
+# Organization bundles
+
+All fifteen live under one folder.
+
+* [organizations/](organizations/README.md) - the canonical record for the org set: what they are for, what is in a bundle, what is deliberately broken
+* [organizations/synthetic-black-mountain-workforce-partnership/](organizations/synthetic-black-mountain-workforce-partnership/index.md) - workforce training, Letcher County, Kentucky
+* [organizations/synthetic-central-valley-farmworker-law-center/](organizations/synthetic-central-valley-farmworker-law-center/index.md) - legal aid, Fresno County, California
+* [organizations/synthetic-corporacion-rio-vivo/](organizations/synthetic-corporacion-rio-vivo/index.md) - environmental justice, Cali, Colombia
+* [organizations/synthetic-crescent-city-career-lab/](organizations/synthetic-crescent-city-career-lab/index.md) - workforce training, New Orleans. **Lapsed determination**
+* [organizations/synthetic-cumberland-gap-health-cooperative/](organizations/synthetic-cumberland-gap-health-cooperative/index.md) - rural health, Letcher County, Kentucky
+* [organizations/synthetic-eastside-harvest-collective/](organizations/synthetic-eastside-harvest-collective/index.md) - food security, Detroit. **Unreconciled budget**
+* [organizations/synthetic-frogtown-community-table/](organizations/synthetic-frogtown-community-table/index.md) - food security, Saint Paul. **The worked reference**
+* [organizations/synthetic-fundacja-prawo-i-schronienie/](organizations/synthetic-fundacja-prawo-i-schronienie/index.md) - legal aid, Warsaw, Poland
+* [organizations/synthetic-gulf-corridor-justice-project/](organizations/synthetic-gulf-corridor-justice-project/index.md) - environmental justice, New Orleans
+* [organizations/synthetic-motor-city-trades-institute/](organizations/synthetic-motor-city-trades-institute/index.md) - workforce training, Detroit
+* [organizations/synthetic-north-star-immigrant-defense/](organizations/synthetic-north-star-immigrant-defense/index.md) - legal aid, Saint Paul
+* [organizations/synthetic-nyando-community-health-trust/](organizations/synthetic-nyando-community-health-trust/index.md) - rural health, Kisumu County, Kenya. **Insufficient evidence**
+* [organizations/synthetic-riverbend-air-alliance/](organizations/synthetic-riverbend-air-alliance/index.md) - environmental justice, Detroit
+* [organizations/synthetic-sierra-foothills-community-health/](organizations/synthetic-sierra-foothills-community-health/index.md) - rural health, Fresno County, California
+* [organizations/synthetic-valle-verde-food-network/](organizations/synthetic-valle-verde-food-network/index.md) - food security, Fresno County, California
+
+# Shared nodes
+
+* [_shared/](_shared/index.md) - classification and place nodes. One required layer (PCS), three optional ones
+
+# Tooling
+
+* [schemas/civic_schema.json](schemas/civic_schema.json) - JSON Schema for the profile
+* [scripts/validate.py](scripts/validate.py) - conformance checker for both levels
+* [scripts/build_hubs.py](scripts/build_hubs.py) - regenerates every hub membership list from the org frontmatter
+* [scripts/extract_pcs.py](scripts/extract_pcs.py) - vendors the attributed Candid PCS subset

@@ -1,369 +1,403 @@
 #!/usr/bin/env python3
-"""Validate okf-civic-sample records against the civic/0.5 profile.
+"""Validate this collection against OKF v0.2 and the civic/0.6 profile.
 
-Checks, per concept record:
-  1. Frontmatter is present and parseable.
-  2. Frontmatter conforms to schemas/civic_schema.json (core OKF + x-civic 0.5).
-  3. Every record carrying an x-civic block declares profile == civic/0.5.
-  4. Edge equivalence: the typed link-title edges in the prose (e.g.
-     `"complements: ..."`, `"requires: ..."`) match x-civic.relations exactly.
-  5. Reciprocity: if A links to B with a SYMMETRIC edge type, B links back to A
-     with the same type. Directional edges (e.g. `requires`) are exempt — only
-     the target's existence is checked.
+Two independent conformance levels, checked separately, because they are not the
+same claim:
 
-Reserved filenames (index.md, log.md; OKF §3.1) are not concept records and
-are exempt from the checks above. Index files are checked separately for the
-§6/§11 rule: an index carries no frontmatter, except the bundle-root index.
+  CORE OKF v0.2 (§11) — the only hard requirements the format itself makes:
+    1. every non-reserved `.md` file has a parseable YAML frontmatter block;
+    2. every frontmatter block has a non-empty `type`;
+    3. `index.md` and `log.md` follow §8 and §9 when present.
+  Plus the v0.2 field families where used: `generated`/`verified` (§5.2),
+  `status` (§5.4), `sources` (§5.1), and the retirement of `timestamp` (§13.1).
 
-Link titles per OKF issue #101 are the authoritative, human-edited source of
-edges; x-civic.relations is a generated projection of them.
+  civic/0.6 — a promise a record opts into by declaring `x-civic.profile`.
+  A record with `type: org` must carry five keys and no more:
+    profile, subject, population, org_type, registration_country
+  `subject`/`population`/`org_type` must resolve against the vendored Candid PCS
+  subset; `registration_country` must be an ISO 3166-1 alpha-2 code.
 
-Usage:
-    python3 scripts/validate.py            # validate every record (exit 1 on failure)
-    python3 scripts/validate.py --write    # regenerate profile + relations in place
-    python3 scripts/validate.py --self-test  # confirm the validator rejects the broken fixture
+Nothing under `x-civic` can make a bundle non-conformant with core OKF: §11
+requires a consumer to tolerate unknown keys. Everything optional is reported,
+never failed.
+
+    python3 scripts/validate.py             # validate the collection
+    python3 scripts/validate.py --terms     # list the emergent (unresolved) terms
+    python3 scripts/validate.py --self-test # confirm the fixtures are rejected
 """
 import argparse
+import datetime
+import glob
+import json
 import os
 import re
+import subprocess
 import sys
 
 try:
     import yaml
 except ImportError:
-    sys.exit("PyYAML is required: pip install -r requirements.txt")
-
-try:
-    import json
-    from jsonschema import Draft202012Validator
-except ImportError:
-    sys.exit("jsonschema is required: pip install -r requirements.txt")
-
-PROFILE = "civic/0.5"
-EDGE_TYPES = {"alternative", "complements", "conflicts", "requires", "related", "learn-with"}
-# Symmetric edges must be reciprocated (A->B implies B->A). Directional edges
-# are one-way by nature (A requires B does not mean B requires A), so the
-# reciprocity check is skipped for them — only target existence is verified.
-DIRECTIONAL_EDGE_TYPES = {"requires"}
-RELATION_TYPES = {"offer", "meal-site", "course"}  # types that carry a relations list
+    sys.exit('PyYAML is required: pip install -r requirements.txt')
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RECORD_DIRS = ["offers", "resources", "docs"]
-ROOT_RECORDS = []
-# Reserved OKF filenames (spec §3.1) are not concept records: index.md is a
-# directory listing (§6) and log.md is an update history (§7). They are exempt
-# from the concept-record checks below and validated separately (see
-# check_index_files), which enforces §6/§11: index files carry no frontmatter
-# except the bundle root.
-RESERVED = {"index.md", "log.md"}
-SCHEMA_PATH = os.path.join(ROOT, "schemas", "civic_schema.json")
-FIXTURE_DIR = os.path.join(ROOT, "schemas", "fixtures")
+PROFILE = 'civic/0.6'
+REQUIRED_ORG_KEYS = ['profile', 'subject', 'population', 'org_type', 'registration_country']
+STATUS_VALUES = {'draft', 'stable', 'deprecated'}
+# The only asserted org-to-org edges civic/0.6 defines. Kept in step with
+# schemas/civic_schema.json and docs/civic-profile.md.
+RELATION_TYPES = {'partners_with', 'coalition_with', 'learn_with'}
+# Every org bundle lives under this one directory. Relation targets are slugs
+# relative to it, not paths.
+ORGS_DIR = 'organizations'
+RESERVED = {'index.md', 'log.md'}
+PCS_JSON = os.path.join(ROOT, '_shared', 'pcs', 'pcs-codes.json')
+FIXTURE_DIR = os.path.join(ROOT, 'schemas', 'fixtures')
+# Repo-level project files, not knowledge concepts. OKF only reserves index.md
+# and log.md; these are excluded because they document the repository rather
+# than describing anything in it.
+NOT_CONCEPTS = {'CONTRIBUTING.md', 'NOTICE.md', 'CHANGELOG.md'}
 
-FM_RE = re.compile(r"^---\n(.*?)\n---\n?(.*)$", re.S)
-# A markdown link that carries a title: [text](href "title")
-TITLED_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\s+\"([^\"]*)\"\)")
+FM = re.compile(r'^---\n(.*?)\n---\n?(.*)$', re.S)
+MD_LINK = re.compile(r'(?<!\!)\[[^\]]*\]\(([^)\s]+?)(?:\s+"[^"]*")?\)')
+WIKILINK = re.compile(r'\[\[([^\]]+)\]\]')
+CODE_SPAN = re.compile(r'`[^`\n]*`')
+CODE_FENCE = re.compile(r'^```.*?^```', re.S | re.M)
+FOOTNOTE_USE = re.compile(r'\[\^([^\]]+)\]')
+FOOTNOTE_DEF = re.compile(r'^\[\^([^\]]+)\]:', re.M)
 
-
-# --------------------------------------------------------------------------- #
-# discovery & parsing
-# --------------------------------------------------------------------------- #
-def discover_records():
-    """Concept records only — reserved filenames (index.md, log.md) excluded."""
-    paths = [os.path.join(ROOT, p) for p in ROOT_RECORDS]
-    for d in RECORD_DIRS:
-        for dirpath, _, files in os.walk(os.path.join(ROOT, d)):
-            for f in sorted(files):
-                if f.endswith(".md") and f not in RESERVED:
-                    paths.append(os.path.join(dirpath, f))
-    return [p for p in paths if os.path.exists(p)]
-
-
-def discover_index_files():
-    """Every index.md in the bundle (root + record dirs)."""
-    paths = []
-    root_index = os.path.join(ROOT, "index.md")
-    if os.path.exists(root_index):
-        paths.append(root_index)
-    for d in RECORD_DIRS:
-        for dirpath, _, files in os.walk(os.path.join(ROOT, d)):
-            if "index.md" in files:
-                paths.append(os.path.join(dirpath, "index.md"))
-    return paths
+# ISO 3166-1 alpha-2, current assignments.
+ISO_3166_1 = set("""AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ
+BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ
+DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT
+GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY
+KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX
+MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS
+RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN
+TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW""".split())
 
 
-def check_index_files(paths):
-    """Enforce OKF §6/§11: index files carry no frontmatter, except the
-    bundle-root index (which may, to declare okf_version). Returns
-    path -> list of error strings."""
-    root_index = os.path.abspath(os.path.join(ROOT, "index.md"))
-    results = {}
-    for p in paths:
-        with open(p, encoding="utf-8") as fh:
-            fm_text, _ = split_frontmatter(fh.read())
-        errs = []
-        if fm_text is not None and os.path.abspath(p) != root_index:
-            errs.append(
-                "index.md must not contain frontmatter (OKF §6/§11); "
-                "only the bundle-root index may"
-            )
-        results[rel(p)] = errs
-    return results
+def split(text):
+    m = FM.match(text)
+    return (m.group(1), m.group(2)) if m else (None, text)
 
 
-def split_frontmatter(text):
-    """Return (frontmatter_text, body) or (None, None) if no frontmatter."""
-    m = FM_RE.match(text)
-    if not m:
-        return None, None
-    return m.group(1), m.group(2)
+def strip_code(body):
+    """Remove fenced blocks and inline spans before scanning for links or
+    footnotes. Documentation quotes regexes and YAML that would otherwise be
+    read as markup."""
+    return CODE_SPAN.sub('', CODE_FENCE.sub('', body))
 
 
-def extract_edges(body):
-    """Typed edges from prose link titles, in order of appearance.
-
-    Only links whose title begins with a recognized edge token count;
-    incidental links (no title, or an unrecognized token) are ignored.
-    Returns a list of dicts: {target, type, note}.
-    """
-    edges = []
-    for href, title in TITLED_LINK_RE.findall(body):
-        if ":" not in title:
-            continue
-        token, _, note = title.partition(":")
-        token = token.strip()
-        if token not in EDGE_TYPES:
-            continue
-        edges.append({"target": href, "type": token, "note": note.strip()})
-    return edges
+def rel(p):
+    return os.path.relpath(p, ROOT)
 
 
-def rel(path):
-    return os.path.relpath(path, ROOT)
+def discover():
+    """Every markdown file in the collection, excluding tooling directories."""
+    out = []
+    for dp, dns, fs in os.walk(ROOT):
+        dns[:] = [d for d in dns if d not in ('.git', 'venv', '.obsidian', 'fixtures')]
+        for f in sorted(fs):
+            if f.endswith('.md') and not (dp == ROOT and f in NOT_CONCEPTS):
+                out.append(os.path.join(dp, f))
+    return sorted(out)
+
+
+def load_pcs():
+    if not os.path.exists(PCS_JSON):
+        return None
+    return json.load(open(PCS_JSON, encoding='utf-8'))['codes']
 
 
 # --------------------------------------------------------------------------- #
-# validation
-# --------------------------------------------------------------------------- #
-def load_records(paths):
-    """Parse every record once. Returns (records, parse_errors).
-
-    records: list of dicts {path, data, body, edges}.
-    """
-    records, errors = [], []
-    for p in paths:
-        with open(p, encoding="utf-8") as fh:
-            text = fh.read()
-        fm_text, body = split_frontmatter(text)
-        if fm_text is None:
-            errors.append((rel(p), "no YAML frontmatter found"))
-            continue
-        try:
-            data = yaml.safe_load(fm_text)
-        except yaml.YAMLError as e:
-            errors.append((rel(p), f"unparseable frontmatter: {e}"))
-            continue
-        if not isinstance(data, dict):
-            errors.append((rel(p), "frontmatter is not a mapping"))
-            continue
-        records.append({"path": p, "data": data, "body": body, "edges": extract_edges(body)})
-    return records, errors
+def as_date(value):
+    """A YAML date, a datetime, or an ISO string. None if it is none of those."""
+    if isinstance(value, datetime.datetime):
+        return value.date()
+    if isinstance(value, datetime.date):
+        return value
+    try:
+        return datetime.date.fromisoformat(str(value))
+    except ValueError:
+        return None
 
 
-def validate(paths):
-    """Return a dict path -> list of error strings (empty list == passed)."""
-    with open(SCHEMA_PATH, encoding="utf-8") as fh:
-        schema = json.load(fh)
-    validator = Draft202012Validator(schema)
+def check_file(p, pcs, terms, stale=None):
+    """Return (core_errors, profile_errors)."""
+    core, prof = [], []
+    base = os.path.basename(p)
+    text = open(p, encoding='utf-8').read()
+    fm_text, body = split(text)
 
-    records, parse_errors = load_records(paths)
-    results = {rel(p): [] for p in paths}
-    for path_rel, msg in parse_errors:
-        results[path_rel].append(msg)
+    # ---------- reserved files (OKF §8, §9; §11 rule 3) ----------
+    if base == 'index.md':
+        is_bundle_root = os.path.dirname(p) != ROOT and os.path.exists(
+            os.path.join(os.path.dirname(p), 'README.md'))
+        if fm_text is not None:
+            d = yaml.safe_load(fm_text) or {}
+            extra = [k for k in d if k != 'okf_version']
+            if extra:
+                core.append(f'index.md may carry only `okf_version` (§8); found {extra}')
+            elif d.get('okf_version') != '0.2':
+                core.append(f'okf_version is {d.get("okf_version")!r}, expected "0.2"')
+        elif is_bundle_root:
+            core.append('bundle-root index.md should declare okf_version: "0.2" (§12)')
+        check_links(p, body, core, terms)
+        return core, prof
 
-    # index records by repo-relative path for reciprocity lookups
-    by_path = {rel(r["path"]): r for r in records}
+    if base == 'log.md':
+        if fm_text is not None:
+            core.append('log.md is a reserved file and carries no frontmatter (§3.1, §9)')
+        heads = re.findall(r'^## (.+)$', body, re.M)
+        if not heads:
+            core.append('log.md needs at least one `## YYYY-MM-DD` heading (§9)')
+        bad = [h.strip() for h in heads if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', h.strip())]
+        if bad:
+            core.append(f'log.md headings must be ISO 8601 dates (§9); found {bad}')
+        check_links(p, body, core, terms)
+        return core, prof
 
-    for r in records:
-        path_rel = rel(r["path"])
-        errs = results[path_rel]
-        data, xc = r["data"], r["data"].get("x-civic")
-
-        # 2. schema conformance
-        for e in sorted(validator.iter_errors(data), key=lambda e: e.path):
-            loc = "/".join(str(x) for x in e.path) or "(root)"
-            errs.append(f"schema: {loc}: {e.message}")
-
-        # 3. profile presence/value (clearer message than the schema alone)
-        if isinstance(xc, dict) and xc.get("profile") != PROFILE:
-            errs.append(f"x-civic.profile must be '{PROFILE}' (found {xc.get('profile')!r})")
-
-        # 4. edge equivalence (prose link titles vs x-civic.relations)
-        if isinstance(xc, dict) and data.get("type") in RELATION_TYPES:
-            prose = {(e["target"], e["type"]) for e in r["edges"]}
-            relations = xc.get("relations") or []
-            declared = {(rl.get("target"), rl.get("type")) for rl in relations if isinstance(rl, dict)}
-            for missing in sorted(prose - declared):
-                errs.append(f"relation in prose but not in x-civic.relations: {missing[1]} -> {missing[0]}")
-            for extra in sorted(declared - prose):
-                errs.append(f"x-civic.relations has no matching prose link: {extra[1]} -> {extra[0]}")
-
-        # 5. reciprocity
-        if isinstance(xc, dict):
-            src_dir = os.path.dirname(r["path"])
-            for e in r["edges"]:
-                target_path = rel(os.path.normpath(os.path.join(src_dir, e["target"])))
-                target = by_path.get(target_path)
-                if target is None:
-                    errs.append(f"edge target not found: {e['type']} -> {e['target']}")
-                    continue
-                if e["type"] in DIRECTIONAL_EDGE_TYPES:
-                    continue  # one-way edge: target exists, no reciprocity expected
-                back = {(b["target"], b["type"]) for b in target["edges"]}
-                expected = (os.path.basename(r["path"]), e["type"])
-                if expected not in back:
-                    errs.append(
-                        f"non-reciprocal {e['type']} edge to {e['target']}: "
-                        f"{rel(target['path'])} does not link back"
-                    )
-
-    return results
-
-
-# --------------------------------------------------------------------------- #
-# --write: regenerate profile + relations from prose edges
-# --------------------------------------------------------------------------- #
-def render_relations(edges):
-    if not edges:
-        return ["  relations: []"]
-    out = ["  relations:"]
-    for e in edges:
-        out.append(f"    - target: {e['target']}")
-        out.append(f"      type: {e['type']}")
-        if e["note"]:
-            note = e["note"].replace("\\", "\\\\").replace('"', '\\"')
-            out.append(f'      note: "{note}"')
-    return out
-
-
-def rewrite_text(text):
-    """Set x-civic.profile and regenerate relations without disturbing other lines."""
-    fm_text, body = split_frontmatter(text)
+    # ---------- concept documents (§11 rules 1 and 2) ----------
     if fm_text is None:
-        return text
-    data = yaml.safe_load(fm_text)
-    if not isinstance(data, dict) or "x-civic" not in data:
-        return text
+        core.append('no parseable YAML frontmatter (§11.1)')
+        return core, prof
+    try:
+        d = yaml.safe_load(fm_text)
+    except yaml.YAMLError as e:
+        core.append(f'unparseable frontmatter: {e}')
+        return core, prof
+    if not isinstance(d, dict):
+        core.append('frontmatter is not a mapping')
+        return core, prof
+    if not d.get('type'):
+        core.append('missing non-empty `type` (§11.2)')
 
-    lines = fm_text.split("\n")
-    start = next((i for i, l in enumerate(lines) if l.rstrip() == "x-civic:"), None)
-    if start is None:
-        return text
-    end = start + 1
-    while end < len(lines) and (lines[end] == "" or lines[end].startswith(" ")):
-        end += 1
-    inner = lines[start + 1:end]
+    # ---------- v0.2 field families ----------
+    if 'timestamp' in d:
+        core.append('`timestamp` is superseded by `generated.at` (§13.1)')
+    if 'status' in d and d['status'] not in STATUS_VALUES:
+        core.append(f'status {d["status"]!r} is not draft|stable|deprecated (§5.4)')
+    g = d.get('generated')
+    if g is not None:
+        if not isinstance(g, dict) or not g.get('by'):
+            core.append('`generated.by` is required within `generated` (§5.2)')
+        elif not re.match(r'^(human:|process:)\S+|^\S+/\S+$', str(g['by'])):
+            core.append(f'generated.by {g["by"]!r} does not follow the actor convention (§7)')
+    v = d.get('verified')
+    if v is not None:
+        events = v if isinstance(v, list) else [v]
+        for ev in events:
+            if not isinstance(ev, dict) or not ev.get('by') or not ev.get('at'):
+                core.append('each `verified` entry needs `by` and `at` (§5.2)')
+        # A determination with no term cannot be aged, so freshness becomes
+        # unanswerable rather than false. §5.5 pairs the two keys.
+        if 'stale_after' not in d:
+            core.append('`verified` without `stale_after` — a determination with no term '
+                        'cannot be checked for freshness (§5.5)')
 
-    # strip any existing profile line and relations block
-    cleaned, i = [], 0
-    while i < len(inner):
-        line = inner[i]
-        if re.match(r"^  profile:", line):
-            i += 1
+    # `stale_after` must be a real date. Whether it has *passed* is deliberately
+    # not an error: this collection ships one deliberately-expired determination,
+    # and expiry is a fact about today, not a defect in the record.
+    if 'stale_after' in d:
+        day = as_date(d['stale_after'])
+        if day is None:
+            core.append(f'stale_after {d["stale_after"]!r} is not an ISO 8601 date (§5.5)')
+        elif stale is not None and day < datetime.date.today():
+            stale[rel(p)] = day
+
+    source_ids = set()
+    for s in d.get('sources') or []:
+        if not isinstance(s, dict):
+            core.append('a `sources` entry is not a mapping (§5.1)')
             continue
-        if re.match(r"^  relations:", line):
-            i += 1
-            while i < len(inner) and inner[i].strip() != "" and not re.match(r"^  \S", inner[i]):
-                i += 1
-            continue
-        cleaned.append(line)
-        i += 1
+        if not s.get('resource'):
+            core.append('a `sources` entry lacks the required `resource` (§5.1)')
+        if s.get('id'):
+            source_ids.add(s['id'])
 
-    new_inner = [f"  profile: {PROFILE}"] + cleaned
-    if data.get("type") in RELATION_TYPES:
-        new_inner += render_relations(extract_edges(body))
+    used = set(FOOTNOTE_USE.findall(strip_code(body))) - set(FOOTNOTE_DEF.findall(body))
+    used |= set(FOOTNOTE_USE.findall(strip_code(body)))
+    for u in sorted(set(FOOTNOTE_USE.findall(strip_code(body)))):
+        if u not in source_ids:
+            core.append(f'footnote [^{u}] has no matching `sources[].id` (§5.1)')
+    for u in sorted(set(FOOTNOTE_USE.findall(strip_code(body)))):
+        if u not in set(FOOTNOTE_DEF.findall(body)):
+            core.append(f'footnote [^{u}] is used but never defined')
 
-    new_lines = lines[:start + 1] + new_inner + lines[end:]
-    return "---\n" + "\n".join(new_lines) + "\n---\n" + body
-
-
-def write_all(paths):
-    changed = []
-    for p in paths:
-        with open(p, encoding="utf-8") as fh:
-            text = fh.read()
-        new = rewrite_text(text)
-        if new != text:
-            with open(p, "w", encoding="utf-8") as fh:
-                fh.write(new)
-            changed.append(rel(p))
-    return changed
-
-
-# --------------------------------------------------------------------------- #
-# reporting / entry point
-# --------------------------------------------------------------------------- #
-def report(results):
-    failed = {p: errs for p, errs in results.items() if errs}
-    for p in sorted(results):
-        errs = results[p]
-        mark = "FAIL" if errs else "ok"
-        print(f"[{mark}] {p}")
-        for e in errs:
-            print(f"       - {e}")
-    print()
-    total = len(results)
-    print(f"{total - len(failed)}/{total} records passed.")
-    return not failed
-
-
-def self_test():
-    """The validator must REJECT every fixture under schemas/fixtures/."""
-    fixtures = [
-        os.path.join(FIXTURE_DIR, f)
-        for f in sorted(os.listdir(FIXTURE_DIR))
-        if f.endswith(".md")
-    ] if os.path.isdir(FIXTURE_DIR) else []
-    if not fixtures:
-        print("self-test: no fixtures found under schemas/fixtures/")
-        return False
-    results = validate(fixtures)
-    ok = True
-    for p in sorted(results):
-        errs = results[p]
-        if errs:
-            print(f"[rejected as expected] {p} ({len(errs)} error(s))")
+    # ---------- civic/0.6 ----------
+    xc = d.get('x-civic')
+    if xc is not None:
+        if not isinstance(xc, dict):
+            prof.append('`x-civic` is not a mapping')
         else:
-            print(f"[UNEXPECTED PASS] {p} — fixture should have failed")
+            if xc.get('profile') != PROFILE:
+                prof.append(f'x-civic.profile must be {PROFILE!r} (found {xc.get("profile")!r})')
+            if d.get('type') == 'org':
+                for k in REQUIRED_ORG_KEYS:
+                    if k not in xc:
+                        prof.append(f'REQUIRED x-civic.{k} is missing from a `type: org` record')
+            for key in ('subject', 'population'):
+                val = xc.get(key)
+                if val is None:
+                    continue
+                if not isinstance(val, list):
+                    prof.append(f'x-civic.{key} must be a list of PCS codes')
+                    continue
+                for code in val:
+                    verdict = check_pcs(code, key, pcs)
+                    if verdict:
+                        prof.append(verdict)
+            if 'org_type' in xc:
+                verdict = check_pcs(xc['org_type'], 'org_type', pcs)
+                if verdict:
+                    prof.append(verdict)
+            rc = xc.get('registration_country')
+            if rc is not None and str(rc) not in ISO_3166_1:
+                prof.append(f'registration_country {rc!r} is not an ISO 3166-1 alpha-2 code')
+            # Asserted edges only, and only the three types the profile defines.
+            # Unenforced, this drifted once already: `learn-with` against its two
+            # underscored siblings, in the data and the profile doc both.
+            rels = xc.get('relations')
+            if rels is not None:
+                if not isinstance(rels, list):
+                    prof.append('x-civic.relations must be a list')
+                else:
+                    for r in rels:
+                        if not isinstance(r, dict) or not r.get('target') or not r.get('type'):
+                            prof.append('each x-civic.relations entry needs `target` and `type`')
+                            continue
+                        if r['type'] not in RELATION_TYPES:
+                            prof.append(f'relation type {r["type"]!r} is not '
+                                        f'{"|".join(sorted(RELATION_TYPES))}')
+                        target = os.path.join(ROOT, ORGS_DIR, str(r['target']), 'README.md')
+                        if not os.path.exists(target):
+                            prof.append(f'relation target {r["target"]!r} has no bundle README '
+                                        f'under {ORGS_DIR}/')
+
+    check_links(p, body, core, terms)
+    return core, prof
+
+
+def check_pcs(code, facet, pcs):
+    if pcs is None:
+        return None  # snapshot absent; skip rather than fail
+    meta = pcs.get(str(code))
+    if meta is None:
+        return (f'{code} is not in the vendored Candid PCS subset — '
+                f'run scripts/extract_pcs.py, or the code does not exist')
+    if meta['facet'] != facet:
+        return f'{code} is a PCS {meta["facet"]} code, used as {facet}'
+    return None
+
+
+def check_links(p, body, core, terms):
+    """Markdown links must resolve. Unresolved wikilinks are emergent terms, not errors."""
+    clean = strip_code(body)
+    for href in MD_LINK.findall(clean):
+        if href.startswith(('http://', 'https://', 'mailto:', '#')):
+            continue
+        target = href.split('#')[0]
+        if not target:
+            continue
+        cand = os.path.normpath(os.path.join(os.path.dirname(p), target))
+        if not os.path.exists(cand):
+            core.append(f'markdown link does not resolve: {href}')
+    for w in WIKILINK.findall(clean):
+        term = w.split('|')[0].replace('\\', '').strip()
+        cand = os.path.normpath(os.path.join(os.path.dirname(p), term + '.md'))
+        if os.path.exists(cand):
+            core.append(f'wikilink [[{term}]] resolves to a file; use a markdown link (§6.1)')
+        else:
+            terms.setdefault(term, set()).add(rel(p))
+
+
+# --------------------------------------------------------------------------- #
+def self_test():
+    fixtures = sorted(glob.glob(os.path.join(FIXTURE_DIR, '*.md')))
+    if not fixtures:
+        print('self-test: no fixtures found under schemas/fixtures/')
+        return False
+    pcs = load_pcs()
+    ok = True
+    for p in fixtures:
+        core, prof = check_file(p, pcs, {})
+        n = len(core) + len(prof)
+        if n:
+            print(f'[rejected as expected] {rel(p)} — {n} error(s)')
+            for e in (core + prof)[:4]:
+                print(f'       - {e}')
+        else:
+            print(f'[UNEXPECTED PASS] {rel(p)} — fixture should have failed')
             ok = False
     print()
-    print("self-test passed." if ok else "self-test FAILED.")
+    print('self-test passed.' if ok else 'self-test FAILED.')
     return ok
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Validate the okf-civic-sample bundle.")
-    ap.add_argument("--write", action="store_true", help="regenerate profile + relations in place")
-    ap.add_argument("--self-test", action="store_true", help="confirm fixtures are rejected")
+    ap = argparse.ArgumentParser(description='Validate the collection.')
+    ap.add_argument('--terms', action='store_true', help='list emergent (unresolved) terms')
+    ap.add_argument('--self-test', action='store_true', help='confirm the fixtures are rejected')
+    ap.add_argument('--quiet', action='store_true', help='only report failures')
     args = ap.parse_args()
 
     if args.self_test:
         sys.exit(0 if self_test() else 1)
 
-    paths = discover_records()
-    if args.write:
-        changed = write_all(paths)
-        if changed:
-            print("Rewrote:")
-            for c in changed:
-                print(f"  - {c}")
-        else:
-            print("No changes (relations already up to date).")
-        sys.exit(0)
+    pcs = load_pcs()
+    if pcs is None:
+        print('note: _shared/pcs/pcs-codes.json is absent; PCS codes will not be checked.\n')
 
-    results = validate(paths)
-    results.update(check_index_files(discover_index_files()))
-    sys.exit(0 if report(results) else 1)
+    terms = {}
+    stale = {}
+    files = discover()
+    core_fail, prof_fail = {}, {}
+    for p in files:
+        core, prof = check_file(p, pcs, terms, stale)
+        if core:
+            core_fail[rel(p)] = core
+        if prof:
+            prof_fail[rel(p)] = prof
+
+    for p in sorted(map(rel, files)):
+        mark = 'FAIL' if (p in core_fail or p in prof_fail) else 'ok'
+        if not (args.quiet and mark == 'ok'):
+            print(f'[{mark}] {p}')
+            for e in core_fail.get(p, []):
+                print(f'       - core: {e}')
+            for e in prof_fail.get(p, []):
+                print(f'       - civic/0.6: {e}')
+
+    # hubs must be derived from current frontmatter, not stale
+    hub = subprocess.run([sys.executable, os.path.join(ROOT, 'scripts', 'build_hubs.py'), '--check'],
+                         capture_output=True, text=True)
+    hubs_ok = hub.returncode == 0
+
+    print()
+    print(f'{len(files) - len(set(core_fail) | set(prof_fail))}/{len(files)} records passed.')
+    print(f'  core OKF v0.2 : {len(files) - len(core_fail)}/{len(files)}')
+    print(f'  civic/0.6     : {len(files) - len(prof_fail)}/{len(files)}')
+    print(f'  generated hubs: {"up to date" if hubs_ok else "STALE — run scripts/build_hubs.py"}')
+    if not hubs_ok:
+        print(hub.stdout.strip())
+    print(f'  emergent terms: {len(terms)} unresolved wikilink term(s) — informational, not errors')
+    if stale:
+        today = datetime.date.today()
+        print(f'  expired determinations: {len(stale)} record(s) past `stale_after` '
+              f'as of {today} — informational, not errors')
+        for path, day in sorted(stale.items()):
+            print(f'       - {path} — stale_after {day} ({(today - day).days} days ago)')
+    else:
+        print('  expired determinations: none past `stale_after`')
+
+    if args.terms:
+        print()
+        print('Emergent terms (vocabulary the controlled facets do not carry):')
+        for t, where in sorted(terms.items()):
+            print(f'  [[{t}]] — {len(where)} record(s)')
+
+    sys.exit(0 if (not core_fail and not prof_fail and hubs_ok) else 1)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

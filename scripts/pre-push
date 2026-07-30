@@ -12,8 +12,13 @@ else
     PY=python3
 fi
 
-echo "pre-push: validating okf-civic-sample…"
-if ! "$PY" "$REPO_ROOT/scripts/validate.py"; then
+echo "pre-push: validating okf-civic-sample (core OKF v0.2 + civic/0.6)…"
+if ! "$PY" "$REPO_ROOT/scripts/validate.py" --quiet; then
     echo "pre-push: validation failed — push aborted." >&2
+    exit 1
+fi
+
+if ! "$PY" "$REPO_ROOT/scripts/validate.py" --self-test >/dev/null; then
+    echo "pre-push: validator self-test failed — push aborted." >&2
     exit 1
 fi

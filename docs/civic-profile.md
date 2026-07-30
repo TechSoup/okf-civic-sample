@@ -1,161 +1,214 @@
 ---
 type: doc
 title: The Civic Profile (x-civic)
-description: A proposed OKF extension profile for civil-society knowledge.
+description: A proposed OKF extension profile for civil-society organizations. Four required fields on top of core OKF.
 tags: [okf, civic-profile, proposal]
-timestamp: 2026-06-20T00:00:00Z
+status: draft
+generated: { by: claude-code/claude-opus-5, at: 2026-07-29T00:00:00Z }
+x-civic:
+  profile: civic/0.6
 ---
 
 # The Civic Profile (`x-civic`) — a proposed OKF extension for civil society
 
-**Status:** draft proposal, v0.5 · **Namespace:** `x-civic` · **Builds on:** OKF v0.1
+**Status:** draft proposal, v0.6 · **Namespace:** `x-civic` · **Builds on:** [OKF v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
 
-> **v0.5 changes.** All additive (no breaking changes) — civic/0.5 adds **federation**, so independently-maintained bundles form one navigable graph. (1) **Global identity:** a bundle declares `x-civic.namespace` (and `base_uri`) in its root; every record's global id is `namespace:slug`. (2) **Federated edges:** a `relations` `target` may be a CURIE `namespace:slug` pointing into *another* bundle; such edges are tagged `external` and are not reciprocated (you can't write into a peer's files). A bundle ships a **peer registry** (`registry/peers.json`) mapping each namespace to its location. (3) **Capability as join key:** `capability` is the cross-bundle substitution axis and SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`), the same "ship your registry" pattern as audiences. See "Federation" below.
+> **v0.6 is a re-scoping, not an increment.** Earlier versions of this profile described *resource catalogs* — meal sites, discount offers — and grew to about a dozen fields including a federation model and an audience-resolution registry. v0.6 describes **organizations**, requires **four fields**, and deletes almost everything else.
 >
-> **v0.4 changes.** One change from v0.3, in eligibility: the flat `eligibility.org_types` field is replaced by **`eligibility.eligible_audiences`** — an OR-list of *audience* keys, each resolving (via a producer-local audience registry shipped with the bundle) to an `(org_type AND subject)` PCS clause. A record is eligible to a user matching **any** audience, so one record can serve several distinct audiences at once (e.g. nonprofits **or** public libraries) — which a single flat `(org_types AND pcs_subject)` pair could not express. `eligibility.pcs_subject` remains as an optional, independent mission restriction. The interoperable contract is the *resolved clauses*, so a conformant bundle publishes its audience registry. This is the one breaking change in 0.4.
+> Two things drove that. First, core OKF moved from v0.1 to **v0.2**, which made provenance, trust, lifecycle, and attestation first-class in core — absorbing four things this profile had been carrying. Second, we concluded that a profile requiring a lot is a profile nobody adopts. The OKF spec requires exactly one field. A domain profile should be embarrassed to require many more.
 >
-> **v0.3 changes.** Two changes from v0.2: (1) the typed-edge vocabulary expands from `complements`/`alternative` to also include `conflicts`, `requires`, `related`, and `learn-with` (see "Relationships as graph edges"); `requires` is **directional** (one-way), the rest are symmetric/reciprocal. (2) Subject and organization-type eligibility now use **Candid's Philanthropy Classification System (PCS)** as the recommended controlled vocabulary — the `eligibility.ntee_codes` key is renamed to `eligibility.pcs_subject`, and `eligibility.org_types` values are PCS OrgType codes. The vocabulary change is the one breaking change in 0.3; everything else remains additive and namespaced under `x-civic`.
->
-> **v0.2 (prior).** Introduced `x-civic.profile` on every record carrying an `x-civic` block, and a generated `x-civic.relations` list mirroring the prose link-title edges. Both live under `x-civic`, so a v0.1 (or any plain OKF) consumer ignores them and still reads valid records.
+> **Breaking changes from v0.5:** `eligibility.eligible_audiences` and the audience registry are gone; `capability` is renamed `provides`; `serves` is renamed `population` and becomes a code list; `x-civic.status` is deleted in favour of core `status`; the federation model (`namespace`, `base_uri`, CURIE targets, `registry/peers.json`) is withdrawn pending a real use for it; `pcs_subject` becomes `subject`; the `offer` and `meal-site` record types are no longer part of the profile.
 
-Core [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) is deliberately minimal — the only required field is `type`, and producers may add any keys. That minimalism is a feature. But the nonprofit/civil-society sector consistently needs a handful of the *same* things that core OKF leaves open. This profile gathers them into one namespaced, additive convention so different producers can interoperate.
+## What this profile requires
 
-It is offered as a **starting point for discussion** with the OKF community — exactly the kind of domain profile a lightweight governance process could ratify (core stays tiny; communities steward profiles).
+Four fields, plus the profile declaration, on the one record describing the organization:
 
-## Why a profile (not core changes)
-
-- Keeps core OKF small and vendor-neutral.
-- Lets the civic sector converge without waiting on the base spec.
-- Compatible by construction: everything lives under `x-civic:`, so any OKF consumer can ignore it safely.
-
-## Proposed fields (all under `x-civic:`)
-
-| Field | Purpose |
-|---|---|
-| `profile` | The profile version this record conforms to (`civic/0.5`). **Required on every record that uses an `x-civic` block** — it qualifies the namespace so a consumer knows which conventions apply. |
-| `status` | Lifecycle: `PROPOSED` · `INITIALIZED` · `ACTIVE` · `ARCHIVED` · `REJECTED`. Only `INITIALIZED`/`ACTIVE` are "live"; `ARCHIVED`/`REJECTED` retain the record (and a reason) so mistakes aren't repeated. |
-| `category` | Human-facing grouping (e.g. Basic Needs, Legal, Digital Inclusion). |
-| `capability` | The *function* a resource provides (e.g. `digital-skills-training`). Two resources sharing a capability are **alternatives/substitutes** — the civic analog of "you only need one of these." As of v0.5 this is the **cross-bundle join key**: an agent finds a capability one bundle lacks by matching the same value in a federated peer. It SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`). |
-| `eligibility` | Who qualifies: `eligible_audiences` (an OR-list of producer-local *audience* keys, each resolving to an *(org_type AND subject)* Candid PCS clause — see "Eligibility vocabularies" below), `regions`, optional `pcs_subject` (independent mission restriction), `rules`. The sentinel `ALL` means "no restriction on a facet." |
-| `operational_status` | Real-world state of the service (e.g. `operational`, `comingSoon`) — **distinct from `status`**. `status` describes the *knowledge record*; `operational_status` describes the *thing the record is about*. A site can be a valid `ACTIVE` record while `comingSoon` in reality. |
-| `provenance` | `last_audited` (date) and `source` on every record, plus a type-specific identifier — `range_id` for directory records, `vendor_url` for offers. Trust depends on freshness and traceability. |
-| `reason` | Required when `status` is `ARCHIVED` or `REJECTED` — the "looks like a discount/offer but isn't" record. |
-| `relations` | A machine-readable list of this record's typed edges, each `{target, type, note}`. **Local** edges are generated from the prose link titles, not hand-maintained (see below). **Federated** edges (v0.5) — whose `target` is a CURIE `namespace:slug` for another bundle — are authored directly here (there is no local prose link to derive them from) and tagged `external`. |
-
-## Relationships as graph edges
-
-Use normal markdown links in the body for referral partners, parent programs, and alternatives. To make the *type* of each edge machine-readable — not just legible to a human reading the prose — this profile adopts the link-title convention proposed in OKF issue [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101): a leading token before a colon in the link title names the edge.
-
-```
-[Martin Luther King Jr. Center](martin-luther-king-jr-center.md "alternative: same free-summer-meals capability, nearby")
+```yaml
+type: org                                # core OKF — the only field core requires
+x-civic:
+  profile: civic/0.6
+  subject: [SS030601, SS030600]           # Candid PCS Subject facet
+  population: [PG010000, PG030000]        # Candid PCS Population facet
+  org_type: EA040000                      # Candid PCS OrgType facet
+  registration_country: US                # ISO 3166-1 alpha-2
 ```
 
-The civic edge vocabulary (unchanged since v0.3):
+That is the entire normative content of the profile. Everything else in this document is either an explanation of why, or an **optional** convention.
 
-| Token | Meaning | Direction |
+### Why these four
+
+They are the questions you cannot answer *about* an organization without asking the organization, and which every consumer needs before it can do anything else:
+
+| Field | Question | Vocabulary |
 |---|---|---|
-| `complements` | Targets provide *distinct* capabilities that work together as a stack. | symmetric |
-| `alternative` | Targets share a `capability`; you need only one (substitutes). | symmetric |
-| `conflicts` | Targets should **not** be deployed together — incompatible, mutually exclusive, or interfering. The inverse of `complements`. | symmetric |
-| `requires` | The source depends on the target; the target must be in place first (prerequisite). | **directional** |
-| `related` | A general "see also" with no stronger claim. | symmetric |
-| `learn-with` | Links an offer to a `course`/training (or vice versa) that helps adopt it. | symmetric |
+| `subject` | What does it do? | PCS **Subject** — 867 codes, 18 top-level branches |
+| `population` | Who does it serve? | PCS **Population** — 802 codes, 11 categories |
+| `org_type` | What kind of organization is it? | PCS **OrgType** — 93 codes |
+| `registration_country` | Under whose law does it exist? | ISO 3166-1 alpha-2 |
 
-**Symmetric vs directional.** Symmetric edges must be **reciprocal** — if A links to B, B links back to A with the same token (the validator enforces this). `requires` is **directional** by nature (A requires B does not imply B requires A), so reciprocity is not expected; the validator only checks that the target exists.
+Mission area, demographics served, organizational form, and jurisdiction. Nothing else is required because nothing else is *always* knowable — and a required field that cannot always be filled in is a field that gets faked.
 
-`complements`, `alternative`, and `conflicts` reason over `capability` (shared capability → substitutes; distinct capabilities → complements; interfering capabilities → conflicts). Existing OKF consumers that ignore link titles still see valid links; tools that read them get typed edges.
+### Two conformance levels, and this one cannot break the other
 
-### The prose links are the source of truth; `relations` is generated
+This distinction matters more than any field in the profile.
 
-The link-title tokens in the document body are the **single, human-edited source of truth** for edges — this keeps the profile aligned with #101 rather than forking a parallel convention. For consumers that parse YAML but not markdown link titles, the same edges are mirrored into a structured `x-civic.relations` list:
+**Core OKF v0.2 conformance** (§11) requires three things: parseable frontmatter on every non-reserved `.md`, a non-empty `type` in each, and `index.md`/`log.md` following §8/§9 when present. §11 also says a consumer **MUST NOT** reject a bundle for unknown additional frontmatter keys, unknown `type` values, missing optional fields, or broken cross-links.
+
+**So nothing under `x-civic` can make a bundle non-conformant with OKF.** A generic OKF reader ignores the whole namespace. That is what "namespaced and additive" buys, and it is why the profile is safe to propose.
+
+**civic/0.6 conformance** is therefore a **promise a record opts into** by declaring `x-civic.profile`. If you declare it and omit `population`, your declaration is false — but your bundle is still perfectly good OKF. `scripts/validate.py` reports the two levels separately for exactly this reason.
+
+## What is NOT required, and why that is the design
+
+Every bundle in this collection carries far more than four fields. All of it is optional, and it is what makes a bundle worth reading:
+
+| Optional | What it adds |
+|---|---|
+| `provides` | The specific function the organization offers, as a substitution/matching axis |
+| `registration.{scheme,id,tax_status,legal_form}` | How to look the organization up, where a registry exists |
+| `budget_currency`, budget figures | Size, in a stated currency |
+| `operating_locations`, `situation` | Where it works, as distinct from where it is registered |
+| `ntee`, `sdg` | Additional classification layers |
+| `relations` | Asserted organization-to-organization edges (`partners_with`, `coalition_with`, `learn_with`) |
+| `verifiable_by` | Who could answer "how do I know this?" |
+| `org_type_note`, `classification_note` | Why a code was chosen, or deliberately not assigned |
+| Whole documents | `population.md`, `programs.md`, `technology/`, `technical-volunteers/`, `verification.md` |
+
+**The rule: a required field must be answerable by every organization in the world. Anything else is an enrichment.** The three international bundles in this collection exist to test that rule, and one of them — [Nyando](../organizations/synthetic-nyando-community-health-trust/README.md), which has no usable registry record — is the reason `registration.id` is not required.
+
+## Classification: why Candid PCS
+
+The profile binds three of its four required fields to Candid's [Philanthropy Classification System](https://taxonomy.candid.org). Three reasons.
+
+**1. It has the facets we need, already separated.** Subject answers *what*, Population answers *who*, OrgType answers *what kind*. Most sector vocabularies conflate at least two of those.
+
+**2. It is not jurisdictional.** This is the finding that decided it. **NTEE is maintained by the US IRS and classifies US tax-exempt entities**, so it cannot apply to a Polish *fundacja*, a Colombian *corporación*, or a Kenyan trust. An NTEE-based rollup over this collection silently returns twelve of fifteen — no error, no null, the three international organizations simply are not in the result set. PCS Subject and Population classify *activity and people*, which every organization has regardless of tax status.
+
+**3. It ships its own NTEE crosswalk.** 555 of 867 Subject codes carry a former NTEE/GCS code. The twelve US organizations in this collection were crosswalked **mechanically** through that column rather than assigned by hand. That is the difference between a code you can defend and a code you remembered.
+
+**One honest caveat.** PCS is not *uniformly* jurisdiction-neutral. Candid's own scope note for `EA040000` (Public charities) describes US 501(c) organizations specifically. The generic parents are neutral, which is why the two organizations whose legal form has no PCS equivalent — the Colombian *corporación* and the Kenyan trust — sit at the level-1 `EA000000` (Non-governmental organizations) and say so in `org_type_note`. **Using a parent code deliberately is better than forcing a closer-looking child**, and better still than inventing one.
+
+### Don't fabricate codes
+
+Earlier versions of this collection shipped an empty `_shared/pcs/` folder with a document explaining that assigning codes from memory would put invented identifiers into a real vocabulary's namespace. That reasoning was right. It has now been **satisfied rather than abandoned**: every code was read out of Candid's published 2024 taxonomy, and the subset in use is vendored as [`_shared/pcs/pcs-codes.json`](../_shared/pcs/pcs-codes.json) with attribution, so tooling runs offline.
+
+The rule stands for anyone extending this: **an empty slot documented as empty is a better artifact than a folder of plausible-looking codes somebody made up.**
+
+> **Attribution.** The Philanthropy Classification System is © Candid, available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: <https://taxonomy.candid.org>. A producer using PCS codes must credit Candid and indicate modifications, and must not charge users a premium for the ability to use PCS. This profile *recommends* PCS; a bundle MAY use another vocabulary, but interoperating tools will expect PCS.
+
+## Geography
+
+`registration_country` is required, as ISO 3166-1 alpha-2. Sub-national placement is optional (`operating_locations`, and a `situation` node edge).
+
+**Registration country and operating geography are different facts** and the profile keeps them apart. An INGO registered in the United States and working in Kenya has `registration_country: US`; a query for "organizations working in Kenya" finds it only through the optional operating layer. That is a deliberate trade: making the operating layer required would fail organizations that cannot enumerate where they work.
+
+PCS has no geography facet, which is why this one field is not PCS-bound.
+
+## Two layers of link, and the one this profile actually cares about
+
+Core OKF §6.1 says links are **untyped**: "the specific kind is conveyed by the surrounding prose, not by the link itself." This profile does not fight that. It adds one distinction on top.
+
+**Controlled edges live in frontmatter.** The required PCS codes and country are frontmatter values, not prose links. They generate the hub nodes in [`_shared/`](../_shared/index.md), and the hub membership lists are **derived** from them by `scripts/build_hubs.py` — never hand-maintained. Frontmatter is authoritative; the hub is a projection.
+
+**Emergent terms live in prose, as wikilinks that resolve to nothing.**
+
+```markdown
+The five largest communities are [[Hmong]], [[Karen]], [[Somali]], [[Oromo]], and [[Latino]].
+```
+
+There is no `Hmong.md`. There does not need to be one. §6.1 requires a consumer to tolerate a link whose target does not exist because "it may simply represent not-yet-written knowledge" — so an unresolved wikilink is not a broken link, it is a **proto-hub**.
+
+This is the profile's central claim about how a civic vocabulary should grow. PCS Population has exactly one code for LGBTQIA+ people (`PC010000`), one for immigrants and migrants (`PG010000`), one for farm workers (`PJ130000`). Those codes are correct, queryable, and comparable across producers. They are also the least interesting true thing about who any real organization serves. An organization that writes `[[Mixteco]]`, `[[Triqui]]`, `[[consejos comunitarios]]`, or `[[returning citizens]]` is making a distinction that matters to its work and that no committee ratified.
+
+**The controlled vocabulary makes bundles comparable. The emergent one makes them true.** When enough producers reach for the same term independently, that shape becomes visible, and *then* someone writes the page and it becomes a real node. Vocabulary grows from below instead of being issued from above.
+
+Practically: **a wikilink that resolves to a file is a mistake** — use a markdown link, so a plain OKF consumer sees the edge. `scripts/validate.py` enforces that, and reports unresolved terms as information rather than error. `--terms` lists them.
+
+### Asserted vs computed edges
+
+Optional `x-civic.relations` records organization-to-organization edges that **cannot be computed**: `partners_with`, `coalition_with`, `learn_with`. A referral agreement between a food shelf and an immigration practice is a fact about the world.
+
+What is *not* stored, because it is derivable: "these two organizations are substitutes" (same `provides`, same place), "these two complement each other" (different `provides`, same place, same `population`). Deriving those is a query, not a field. **That is most of the argument for why the required set stays small** — much of the useful graph is computed from four fields plus a place.
+
+## What core OKF v0.2 now handles, so this profile does not
+
+This section is mostly a list of things deleted from v0.5. Anyone who read the earlier profile should read it.
+
+| Need | v0.5 carried | v0.2 core does it with |
+|---|---|---|
+| Where did this claim come from? | a custom `provenance` block | **`sources`** with `id`, plus markdown footnotes keyed to `sources[].id` (§5.1) |
+| Per-source trustworthiness | — | `author`, `usage_count`, `last_modified` credibility signals (§5.1) |
+| Who confirmed it? | a determination log | **`verified: [{by, at}]`** + the actor convention `human:`/`process:` (§5.2, §7) |
+| How much should I trust it? | confidence scores | **trust tiers** derived from `verified` — unverified / machine-confirmed / human-reviewed (§5.3) |
+| Is it still true? | `last_audited` | **`stale_after`**, an absolute date (§5.5) |
+| Record lifecycle | `x-civic.status`, a 5-state enum | **`status: draft \| stable \| deprecated`** (§5.4) |
+| Last content change | `timestamp` | **`generated: {by, at}`** (§5.2, §13.1) |
+
+Two consequences worth stating plainly.
+
+**"Nobody has verified this" is a first-class state and always was.** A record with no `verified` key is *unverified* under §5.3, and §11 forbids a consumer from rejecting it. [Nyando](../organizations/synthetic-nyando-community-health-trust/verification.md) — the organization a verification process could not establish either way — needs no special field. It just has no `verified` key. The profile does not need to invent a way to say *I don't know*.
+
+**A lapsed determination is a date comparison.** [Crescent City Career Lab](../organizations/synthetic-crescent-city-career-lab/verification.md) was approved and its determination expired; its `stale_after` is in the past. No lifecycle machinery required.
+
+## Verification is a path, not a passport
+
+A bundle does not carry a credential. It carries the facts an eligibility decision keys off — `org_type` and `registration_country`, both required — and, optionally, a pointer to who could adjudicate.
 
 ```yaml
 x-civic:
-  relations:
-    - target: martin-luther-king-jr-center.md   # the link's href
-      type: alternative                          # the link-title token
-      note: same free-summer-meals capability, nearby
+  verifiable_by: [techsoup]     # optional: who can answer "how do I know?"
 ```
 
-`relations` is **derived, never hand-maintained**: `scripts/validate.py --write` regenerates it from the prose links, and a plain `scripts/validate.py` run fails if the two ever diverge. Edges are also expected to be **reciprocal** — if A links to B as an `alternative`/`complements`, B links back the same way — which the validator enforces.
+The distinction: `sources` says *where this came from*; `verifiable_by` says *who you can ask*. A determination is a moment in time and belongs outside the bundle — obtained at query time from TechSoup, GlobalGiving, Charity Navigator, or whoever the consumer trusts. The optional `verification.md` document in each bundle records that somebody looked, when, and what they could not establish, on core `verified` + `stale_after`.
 
-## Eligibility vocabularies (audiences over PCS)
+**This is why confidence scores are not a profile field.** Frogtown Table would score 0.88 and Motor City Trades 0.96, at 7.5× the budget with three participant systems that disagree. Both numbers would be correct. **Verification confidence measures how much of an organization exists in retrievable form** — which tracks size, regulatory burden, and proximity to institutions that generate paperwork, and does not track competence. Standardizing a field for it would invite exactly the ranking it cannot support.
 
-As of v0.4, eligibility is expressed as **audiences**. A record's `eligibility.eligible_audiences` is an **OR-list of audience keys**; a user qualifies if they match **any** one. Each audience resolves to an **(org_type AND subject)** predicate over two Candid PCS facets:
+## Money
 
-- **org_type** — PCS **OrgType** facet codes (e.g. `EB000000` = *Governments and agencies*).
-- **subject** — PCS **Subject** facet codes (e.g. `SH020400` = *Public libraries*).
+Optional, and if present: **an amount carries its currency** (`budget_currency`, ISO 4217) and **is not converted**. A figure converted to USD is an exchange rate on an unstated date pretending to be a fact about an organization. If a view needs one currency, it converts at read time with a rate it can cite.
 
-So the audience `public_library` = *(OrgType: government) AND (Subject: public libraries)*, and an offer open to `[nonprofit, public_library]` is eligible to a nonprofit of any mission **OR** a public library. This OR-of-(AND) shape is the v0.4 change: it expresses an offer open to more than one distinct audience, which the flat `org_types` + `pcs_subject` of v0.3 could not.
+Where two figures disagree — [Eastside Harvest](../organizations/synthetic-eastside-harvest-collective/README.md) has a self-reported budget and a filed return 47% apart — **the bundle carries both and refuses to pick.** A single-valued field forces a choice and launders one number into a fact. (OKF §10's Attested Computation is the eventual right home for "was this number produced the way we said"; out of scope here.)
 
-**Audience keys are producer-local; the resolved clauses are the interoperable contract.** Two producers may use different keys for the same `(org_type, subject)` clause, so tools must not interoperate on key strings. A conformant bundle therefore **ships its audience registry** — see [`registry/audiences.json`](../registry/audiences.json) in this sample — mapping each key to its clause, so any consumer can resolve `eligible_audiences` without external knowledge.
+## Document conventions
 
-- **`eligibility.pcs_subject`** (optional) — an independent, offer-level **mission restriction** from the PCS **Subject** facet (e.g. `SA000000` = *Arts and culture*), ANDed on top of audience eligibility and distinct from an audience's own subject. Replaces the NTEE-specific `ntee_codes` of v0.2 (PCS ships an NTEE→PCS crosswalk).
-- The sentinel **`ALL`** on either facet means "no restriction on that facet." Other axes (`regions`, free-text `rules`) are **not** PCS — geography in particular has no PCS facet.
+Not required, but this is what the bundles do and it is worth copying.
 
-> **Attribution.** The Philanthropy Classification System is © Candid, made available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Source: <https://taxonomy.candid.org>. A producer using PCS codes must credit Candid and indicate any modifications; it must not charge users a premium for the ability to use PCS. This profile recommends — but does not mandate — PCS; a bundle MAY use another subject/org-type vocabulary, but interoperating tools expect PCS.
-
-## Federation (v0.5)
-
-A single bundle is one folder of files. Federation lets independently-maintained bundles form one graph an agent can traverse — the way [Data Commons](https://datacommons.org) federates statistical data over shared entity IDs. It rests on three pieces.
-
-**1. Global identity.** A bundle declares its prefix in the root document:
-
-```yaml
-x-civic:
-  namespace: civic-sample
-  base_uri: https://github.com/TechSoup/okf-civic-sample/
-```
-
-Locally, identity is still the file's slug. Globally it is `namespace:slug`. The namespace must match `^[a-z][a-z0-9_-]*$` and be unique among federating peers.
-
-**2. Federated edges.** Local edges are authored as prose link-titles (#101) and reciprocated within the bundle. A **federated** edge points into another bundle, so there is no local file to link — it is authored directly in `x-civic.relations` with a CURIE target:
-
-```yaml
-x-civic:
-  relations:
-    - target: "techsoup:salesforce"     # a record in the TechSoup VKB
-      type: alternative
-      note: "Same CRM capability"
-```
-
-Because the target lives in a peer, a federated edge is **not reciprocated** (we can't edit the peer's files) and is tagged `external` by tooling. The peer namespace resolves through a **peer registry**, `registry/peers.json`, mapping each namespace to its `base_uri` / published feed. Resolution is **offline by default**: tools validate that the namespace is registered, but need not fetch the peer to produce a valid bundle.
-
-**3. Capability as the join axis.** `capability` (above) is what makes "find what my bundle lacks in a peer's" a concrete query: group records by capability across the federated graph. It SHOULD draw from a producer-shipped controlled vocabulary (`registry/capabilities.json`), the same "the resolved value is the contract, so ship your registry" pattern used for audiences.
-
-> **Interop note.** As with audience keys, namespaces are producer-declared; the interoperable contract is the *registry* a bundle ships. A consumer reading two bundles resolves a CURIE edge by looking the namespace up in `peers.json` — no central authority required.
+- **`README.md` is the canonical record** and carries the frontmatter. Consumers should find the organization by `type: org`, not by filename — the filename is a convention for humans.
+- **`index.md` is a listing** and carries no frontmatter except `okf_version` on a bundle root (§8, §12).
+- **`log.md` records changes to the bundle**, in §9's date-grouped form. It is *not* where determinations go; that separation is deliberate.
+- **`generated.by` records who owns a document.** A bundle's `technical-volunteers/constraints.md` carries `human:org-staff` because the organization authored it and it is binding on anything scoping work from the bundle. A tool reading a bundle can tell from the actor which documents are not its to rewrite. This replaces the per-record `authority` field an earlier draft proposed — the actor convention already does the job.
+- **Mark synthetic data at the record level.** `synthetic: true` on every fabricated record, not only on the collection README, because files get separated from their context. Note this is a *producer* key at the top level, not under `x-civic` — "is this real" is not civic-specific, and we think it belongs in core OKF. That is a proposal for upstream, not a profile field.
 
 ## Relationship to Open Referral / HSDS
 
-For human-services directory data (e.g. 211), the sector's established standard is **[Open Referral / HSDS](https://docs.openreferral.org/)** — the Human Services Data Specification (currently **v3.0.1**): a non-hierarchical set of UUID-keyed objects (`Organization`, `Service`, `Location`, `Schedule`, `Eligibility`) defined in JSON Schema, serialized as CSV/JSON datapackages, with an API (HSDA).
+For human-services data, the sector's established standard is **[Open Referral / HSDS](https://docs.openreferral.org/)** v3.0.1 — UUID-keyed objects (`Organization`, `Service`, `Location`, `Eligibility`) in JSON Schema, serialized as datapackages, with an API.
 
-**This profile does not compete with HSDS — it aligns to it.** HSDS is the structured *data-exchange* layer; OKF + `x-civic` is the human- and AI-readable *knowledge* layer beside it. For the overlapping fields they round-trip cleanly:
+**This profile aligns to HSDS rather than competing with it.** HSDS is the structured *data-exchange* layer; OKF + `x-civic` is the human- and AI-readable *knowledge* layer beside it. For overlapping fields they round-trip:
 
-| This bundle (OKF + `x-civic`) | HSDS 3.0.1 |
+| This profile | HSDS 3.0.1 |
 | :--- | :--- |
-| a meal-site / resource document | `Service` (+ `Service_at_Location`) |
-| `title` | `service.name` |
-| `x-civic.location` (address, lat/long) | `Location` |
-| `x-civic.hours`, `x-civic.season` | `Schedule` (RFC 5545 RRULE) |
-| `x-civic.serves`, `x-civic.eligibility` | `Eligibility` |
-| the org operating a site | `Organization` |
-| `provenance.range_id` | external identifier |
-| `x-civic.capability` (substitution / alternatives) | *no direct HSDS object — OKF adds this* |
-| document body (gotchas, guidance, context) | *no HSDS equivalent — OKF's value-add* |
+| an org bundle (`type: org`) | `Organization` |
+| `title` | `organization.name` |
+| `x-civic.registration.id` | `organization.tax_id` / external identifier |
+| `x-civic.operating_locations` | `Location` |
+| `x-civic.population` | `Eligibility` (partially) |
+| `programs.md` | `Service` (one per program, when broken out) |
+| `x-civic.subject` | `taxonomy_term` |
+| `x-civic.provides` (substitution axis) | *no direct HSDS object* |
+| document bodies — gotchas, constraints, context | *no HSDS equivalent* |
 
-What OKF adds on top of HSDS: **verbose, agent-ready context** (the prose a model needs to actually advise someone), **cross-domain generality** (the same format carries offers and skills too, not just directories), **human editability** (markdown in Git, not a normalized database), and **federation** over Git. What HSDS does better: strict validation, relational integrity, and a mature exchange ecosystem. A clean division of labor — and a documented OKF↔HSDS crosswalk like this one is exactly the kind of "human-services profile" worth proposing to both communities.
+What OKF adds: **verbose, agent-ready context** (the prose a model needs to actually advise someone), human editability in Git, and an emergent vocabulary layer. What HSDS does better: strict validation, relational integrity, a mature exchange ecosystem.
 
 ## Alignment with the OKF spec discussion
 
-This profile was revised to track active proposals in the OKF issue tracker rather than invent parallel conventions:
-
-- **Typed link edges** follow [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101) (link-title relationship tokens) — see "Relationships as graph edges" above.
-- **Lifecycle `status` and `provenance`** overlap [#120](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/120), which proposes `status`, `aliases`, a relationship index, and a rationale trail as *core* conventions. We arrived at the same needs independently, from the civic domain. If core OKF adopts a `status` vocabulary, we will map our five-state enum (`PROPOSED`…`REJECTED`) onto it; #120's current draft proposes a simpler `active`/`deprecated`.
-- **`provenance` / freshness** relates to [#94](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/94) (inline citation) and [#97](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/97) (recommending `timestamp` for staleness detection).
+- **Untyped links** — §6.1. The profile adds typed edges only in frontmatter and does not overload link syntax. It no longer implements the link-title token convention proposed in issue [#101](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/101); a reader MAY accept those tokens, but this profile authors edges in frontmatter.
+- **Lifecycle and provenance** — issue [#120](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/120) proposed `status`, a relationship index, and a rationale trail as core conventions. v0.2 delivered most of it, and this profile now uses core `status` rather than its own enum.
+- **Freshness** — issues [#94](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/94) and [#97](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/97); handled by `stale_after` and `sources[].last_modified` in v0.2.
 
 ## Open questions for the community
 
-- Should `status` and `provenance` be promoted toward core OKF (as [#120](https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/120) proposes), or stay profile-level?
-- A shared controlled vocabulary for `capability` and `category` — and should the civic edge vocabulary (`complements`, `alternative`, `conflicts`, `requires`, `related`, `learn-with`) be registered alongside #101's starter set, including the symmetric-vs-directional distinction?
-- Is recommending Candid PCS for `pcs_subject` / `org_types` the right call for a *general* civic profile, or should the profile stay vocabulary-neutral and leave PCS to a regional sub-profile?
-- How to express eligibility precisely without reinventing HSDS?
+1. **Should `synthetic` be core?** "Is this record about a real thing" is not civic-specific, and a marker no consumer is required to check is a marker that fails. We would rather propose it upstream than keep it as a producer key.
+2. **Is four the right number?** We think a domain profile should require almost nothing. Is `org_type` pulling its weight, given that `registration_country` plus `subject` already narrows a lot?
+3. **A shared vocabulary for `provides`.** The substitution/matching axis is where the sector would get the most from convergence, and it is the one field here with no controlled vocabulary behind it. PCS **Strategy** (`UD000000` capacity-building, `UF000000` capital and infrastructure, `UB000000` regranting) may be the right binding for the funding side of it.
+4. **Emergent-term promotion.** When does an unresolved term become a real node, who writes it, and how is ambiguity handled? `[[Karen]]` is a people of Myanmar and also a common given name. A shared namespace with no disambiguation eventually collides, and we do not have an answer.
+5. **Should a profile version pin an OKF version?** `civic/0.6` assumes v0.2 semantics throughout. Nothing currently expresses that dependency.

@@ -1,0 +1,453 @@
+{
+  "attribution": {
+    "vocabulary": "Candid Philanthropy Classification System (PCS)",
+    "edition": "2024 taxonomy definitions",
+    "rights_holder": "Candid",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "source": "https://taxonomy.candid.org",
+    "note": "Extracted subset. Only the codes referenced by this bundle are included; titles and scope notes are Candid's, unmodified. No codes were invented, renamed, or altered."
+  },
+  "codes": {
+    "EA000000": {
+      "code": "EA000000",
+      "facet": "org_type",
+      "title": "Non-governmental organizations",
+      "path": [
+        "Non-governmental organizations"
+      ],
+      "former_ntee": "N",
+      "scope_note": "Organizations or corporations that operate independently of government and do not operate to make a profit. They pursue social, economic, cultural, scientific, religious, and charitable aims for the public, the community, special groups, or their members."
+    },
+    "EA030000": {
+      "code": "EA030000",
+      "facet": "org_type",
+      "title": "Foundations",
+      "path": [
+        "Foundations"
+      ],
+      "former_ntee": null,
+      "scope_note": "Foundations are non-governmental entities that are established as nonprofit corporations or charitable trusts, with a principal purpose of making grants to unrelated organizations, institutions, or individuals for scientific, educational, cultural, religious, or other charitable purposes. Many foundations derive their money from a private source, a family, an individual, or a corporation. In the U.S., foundations file a 990-PF tax form. Community foundations are sometimes considered a type of foundation, but in the U.S. they file a 990 tax form. They derives their support from diverse sources within a specified locality or community, which may include other foundations, individuals, and government agencies."
+    },
+    "EA040000": {
+      "code": "EA040000",
+      "facet": "org_type",
+      "title": "Public charities",
+      "path": [
+        "Public charities"
+      ],
+      "former_ntee": "PC",
+      "scope_note": "Public charities in the United States are 501(c) nonprofit organizations that generally derive their funding from the general public in order to carry out their charitable activities. Some public charities engage in grantmaking activities but most engage in direct services or other tax-exempt activities."
+    },
+    "EB000000": {
+      "code": "EB000000",
+      "facet": "org_type",
+      "title": "Governments and agencies",
+      "path": [
+        "Governments and agencies"
+      ],
+      "former_ntee": "*17 and G",
+      "scope_note": "Organizational systems or polities that administer and govern states or parts of states. This can include executive, legislative, judicial, military, diplomatic and other bodies and entire systems themselves."
+    },
+    "PA010000": {
+      "code": "PA010000",
+      "facet": "population",
+      "title": "Children and youth",
+      "path": [
+        "Children and youth"
+      ],
+      "former_ntee": "A2",
+      "scope_note": "Young people from birth to 18 years of age."
+    },
+    "PA010400": {
+      "code": "PA010400",
+      "facet": "population",
+      "title": "Adolescents",
+      "path": [
+        "Adolescents"
+      ],
+      "former_ntee": "A4",
+      "scope_note": "Young people from 13 to 18 years of age."
+    },
+    "PA020000": {
+      "code": "PA020000",
+      "facet": "population",
+      "title": "Adults",
+      "path": [
+        "Adults"
+      ],
+      "former_ntee": "A5",
+      "scope_note": "People 19 years of age and older."
+    },
+    "PA020300": {
+      "code": "PA020300",
+      "facet": "population",
+      "title": "Older adults",
+      "path": [
+        "Older adults"
+      ],
+      "former_ntee": "A6",
+      "scope_note": "People 65 years of age and older."
+    },
+    "PE030000": {
+      "code": "PE030000",
+      "facet": "population",
+      "title": "Black/African people",
+      "path": [
+        "Black/African people"
+      ],
+      "former_ntee": "E2",
+      "scope_note": "People having origins in any of the Black racial groups of Africa."
+    },
+    "PG010000": {
+      "code": "PG010000",
+      "facet": "population",
+      "title": "Immigrants and migrants",
+      "path": [
+        "Immigrants and migrants"
+      ],
+      "former_ntee": null,
+      "scope_note": "People who have left an area to which they are native to cross a border to another region or country."
+    },
+    "PG010200": {
+      "code": "PG010200",
+      "facet": "population",
+      "title": "Migrant workers",
+      "path": [
+        "Migrant workers"
+      ],
+      "former_ntee": "P2",
+      "scope_note": "People who move from area to area, often on a cyclical schedule, in pursuit of employment."
+    },
+    "PG010400": {
+      "code": "PG010400",
+      "facet": "population",
+      "title": "Refugees and displaced people",
+      "path": [
+        "Refugees and displaced people"
+      ],
+      "former_ntee": "O2",
+      "scope_note": "People who are outside their country of origin or residence and are unable or unwilling to return because of persecution, war, discrimination, disaster, or threat of violence."
+    },
+    "PG010700": {
+      "code": "PG010700",
+      "facet": "population",
+      "title": "Undocumented immigrants",
+      "path": [
+        "Undocumented immigrants"
+      ],
+      "former_ntee": null,
+      "scope_note": "People from one country that have entered another country without permission or who have stayed longer than the period of time allowed them by the host country; may or may not include the children of these people born in the host country."
+    },
+    "PG030000": {
+      "code": "PG030000",
+      "facet": "population",
+      "title": "Economically disadvantaged people",
+      "path": [
+        "Economically disadvantaged people"
+      ],
+      "former_ntee": "P0",
+      "scope_note": "People who lack the economic resources to adequately fulfill their material wants and needs; people who are deprived of choices, opportunities, or well-being due to a lack of wealth or income; people whose income or the value of whose possessions lies below a level set by a nation or other institution in an instrument meant to measure poverty."
+    },
+    "PG040000": {
+      "code": "PG040000",
+      "facet": "population",
+      "title": "Justice-involved people",
+      "path": [
+        "Justice-involved people"
+      ],
+      "former_ntee": null,
+      "scope_note": "People who are in the process of or have in the past been detained, imprisoned, or held captive, in custody, under house arrest, or under close arrest. Includes people on probation."
+    },
+    "PG040300": {
+      "code": "PG040300",
+      "facet": "population",
+      "title": "Detainees",
+      "path": [
+        "Detainees"
+      ],
+      "former_ntee": null,
+      "scope_note": "Migrants, including asylum-seekers, undocumented persons, refugees, etc., held in custody by a state, a government or the military,  without a warrant or charge while awaiting resolution of status or deportation."
+    },
+    "PG090000": {
+      "code": "PG090000",
+      "facet": "population",
+      "title": "People living in rural areas",
+      "path": [
+        "People living in rural areas"
+      ],
+      "former_ntee": null,
+      "scope_note": "People who live in rural areas. The definition of rural varies by country, with population size and density often key considerations."
+    },
+    "PG100000": {
+      "code": "PG100000",
+      "facet": "population",
+      "title": "People living in urban areas",
+      "path": [
+        "People living in urban areas"
+      ],
+      "former_ntee": null,
+      "scope_note": "People who live in urban areas, typically densely populated and with corresponding infrastructure."
+    },
+    "PH040000": {
+      "code": "PH040000",
+      "facet": "population",
+      "title": "Pregnant people",
+      "path": [
+        "Pregnant people"
+      ],
+      "former_ntee": null,
+      "scope_note": "Any person who is currently pregnant."
+    },
+    "PJ020000": {
+      "code": "PJ020000",
+      "facet": "population",
+      "title": "Unemployed people",
+      "path": [
+        "Unemployed people"
+      ],
+      "former_ntee": null,
+      "scope_note": "People without work or other source of income or support, and usually who are actively seeking work."
+    },
+    "PJ080000": {
+      "code": "PJ080000",
+      "facet": "population",
+      "title": "Farmers",
+      "path": [
+        "Farmers"
+      ],
+      "former_ntee": null,
+      "scope_note": "People who raise food for consumption as their primary economic activity; includes truck gardeners, ranchers, pastoralists, and subsistence farmers."
+    },
+    "PJ130000": {
+      "code": "PJ130000",
+      "facet": "population",
+      "title": "Farm workers",
+      "path": [
+        "Farm workers"
+      ],
+      "former_ntee": null,
+      "scope_note": "People employed for labor in agriculture, often on a seasonal basis. For people who own their farm, use Farmers. See also: Migrant workers."
+    },
+    "SA000000": {
+      "code": "SA000000",
+      "facet": "subject",
+      "title": "Arts and culture",
+      "path": [
+        "Arts and culture"
+      ],
+      "former_ntee": "A00",
+      "scope_note": "Enjoyment or understanding of the visual, performing, or folk arts or the humanities (history, art history, modern and classical languages, philosophy, ethics); and organizations that promote the appreciation or understanding of historical events, including historical societies and genealogical or heredity-based organizations (e.g., Sons of the Revolution, Daughters of the Confederacy, etc.). Includes museums and halls of fame; historic preservation programs; groups of or services to artists, performers, entertainers, writers, or humanities scholars; programs which promote artistic expression of or within ethnic groups and cultures; and art and performing art schools, centers, and studios. Does not include libraries and reading programs (see Education); botanical gardens,or zoos (see Environment)."
+    },
+    "SA010500": {
+      "code": "SA010500",
+      "facet": "subject",
+      "title": "Arts education",
+      "path": [
+        "Arts education"
+      ],
+      "former_ntee": "A25",
+      "scope_note": "Provision of formal or informal arts educational programming and/or instruction often without the granting of diplomas or degrees. Also, the operation of arts educational facilities and/or offer of services regarding the arts to educational institutions or to public entities concerned with education. Includes schools, camps and associations that provide instruction and other arts programming to children and adults. For Performing arts education, use that specific code."
+    },
+    "SB040000": {
+      "code": "SB040000",
+      "facet": "subject",
+      "title": "Vocational education",
+      "path": [
+        "Vocational education"
+      ],
+      "former_ntee": "B30",
+      "scope_note": "Secondary or postsecondary education programs available in regular or trade high schools or through separate vocational centers or programs that provide formal preparation for semiskilled, skilled, technical or professional occupations for high-school-aged students and, in some cases, adults who have opted to develop or expand their employment opportunities, often in lieu of preparing for college entry. Vocational education programs help participants prepare for full-time employment upon graduation, part-time employment while in school or for more advanced vocational training at the postsecondary level. Includes regional occupational centers and programs and vocational centers (which are generally operated by community adult schools or other secondary or postsecondary institutions). See also: Job training."
+    },
+    "SC030000": {
+      "code": "SC030000",
+      "facet": "subject",
+      "title": "Natural resources",
+      "path": [
+        "Natural resources"
+      ],
+      "former_ntee": "C30",
+      "scope_note": "Protection of natural resources from abuse, neglect, waste or exploitation and preservation of their availability for future generations. For parks and playgrounds use terms in Sports and recreation. For farmland preservation, use Farmlands; and for irrigation services, use Irrigation and water management."
+    },
+    "SC030100": {
+      "code": "SC030100",
+      "facet": "subject",
+      "title": "Air quality",
+      "path": [
+        "Air quality"
+      ],
+      "former_ntee": "C21",
+      "scope_note": "Promotion and protection of clean air by establishing minimum standards for air quality, developing and enforcing regulations that are designed to reduce and control gaseous and particulate contaminants in the air, monitoring air pollution levels, investigating complaints regarding violations and, when warranted, initiating litigation against individuals and organizations that have failed to comply with air pollution requirements. Includes organizations that are involved with alternative fuels/additives, automobile emissions control, smog test standards and centers, smoking regulation and control of pollution from stationary sources including heating fuel tanks, industrial sources and service stations."
+    },
+    "SC030400": {
+      "code": "SC030400",
+      "facet": "subject",
+      "title": "Water resources",
+      "path": [
+        "Water resources"
+      ],
+      "former_ntee": "C32",
+      "scope_note": "Preservation and protection of water resources from indiscriminate waste and activities to ensure that the supply of quality water is adequate to meet the needs of society, agriculture and industry. Also included are projects to preserve and manage coastal lands including shorelines, coastal waters and lands extending inland from the shore which affect coastal waters; bays, lakes, rivers, wetlands, estuaries, watersheds and other aquatic habitats. See also: Clean water supply (in Public health)."
+    },
+    "SC030407": {
+      "code": "SC030407",
+      "facet": "subject",
+      "title": "Water pollution",
+      "path": [
+        "Water pollution"
+      ],
+      "former_ntee": "C22",
+      "scope_note": "Promotion of a clean environment by establishing minimum water quality standards; developing and enforcing regulations to reduce water pollution; testing, recording and reporting on the quality of water in lakes, rivers and streams; issuing warnings and investigating hazards related to contamination; and, when warranted, initiating litigation against individuals and organizations that have failed to comply with water pollution control regulations. For activities addressing general water conservation, general water pollution or specific bodies of water (such as Chesapeake Bay), use Water resources. For promotion or provision of clean drinking water, use Clean water supply (in Public health)."
+    },
+    "SE040200": {
+      "code": "SE040200",
+      "facet": "subject",
+      "title": "Community health care",
+      "path": [
+        "Community health care"
+      ],
+      "former_ntee": "E21",
+      "scope_note": "The provision of health care services through a variety of programs and facilities in the same community or region, often by management corporations and other entities that own and manage at least one, but typically multiple, hospitals or medical facilities."
+    },
+    "SE050000": {
+      "code": "SE050000",
+      "facet": "subject",
+      "title": "Out-patient medical care",
+      "path": [
+        "Out-patient medical care"
+      ],
+      "former_ntee": "E30",
+      "scope_note": "Care provided in health centers, clinics, and other facilities that provide walk-in, walk-out diagnostic and treatment services of a specialized nature for people whose care does not require confinement or a hospital stay. Includes special care, such as:  Antivenin supplies; Artificial organs; Chemotherapy/radiation therapy; Clinical trials; Coma management; Diagnostic services including Diagnostic radiology/imaging (majors being CAT scans, chest x-rays, GI series, MRI, ultrasound); Blood tests; Bone density tests (for osteoporosis); Heart catheterization monitoring; and Pediatric evaluation. Dialysis centers; Hyperbaric chambers; Outpatient surgery; Pacemakers; Pain management; Second opinions; Sex change operations; Tattoo removal; and Weight management (other than eating disorders)."
+    },
+    "SE050100": {
+      "code": "SE050100",
+      "facet": "subject",
+      "title": "Health care clinics",
+      "path": [
+        "Health care clinics"
+      ],
+      "former_ntee": "E32",
+      "scope_note": "Outpatient facilities, known also as free clinics and community health centers, that have been established by the community and which provide basic medical care including physical examinations, immunizations, family planning, nutrition assistance and diagnosis and treatment of common ailments. Services are often provided on an ability-to-pay basis when they target low-income and indigent residents of the community. Include mobile health clinics."
+    },
+    "SE130200": {
+      "code": "SE130200",
+      "facet": "subject",
+      "title": "Environmental health",
+      "path": [
+        "Environmental health"
+      ],
+      "former_ntee": "E78",
+      "scope_note": "Addressing aspects of the natural or built environment - physical, chemical, and biological factors external to a person - affecting human health and disease-prevention. See also: Clean water supply, Hygiene, and Sanitation."
+    },
+    "SE130700": {
+      "code": "SE130700",
+      "facet": "subject",
+      "title": "Water access, sanitation and hygiene",
+      "path": [
+        "Water access, sanitation and hygiene"
+      ],
+      "former_ntee": null,
+      "scope_note": "The provision of adequate water, sanitation and hygiene services. Examples include promoting the use of toilets and/or latrines, proper waste disposal (human, household and commercial waste), control of rodents and other disease carriers, promoting hand washing, providing potable, healthy or safe water, especially in developing areas of the world, waste water treatment and management, construction of sewer systems, upgrading and/or fixing existing water or sanitation facilities, and other WASH-related issues."
+    },
+    "SH020400": {
+      "code": "SH020400",
+      "facet": "subject",
+      "title": "Public libraries",
+      "path": [
+        "Public libraries"
+      ],
+      "former_ntee": "B71",
+      "scope_note": "Libraries supported by public and/or private funds and operated by publicly elected or appointed officials which provide general library services without charge to all residents of a given community, district or region. Some public libraries are supported and operated wholly or partially by a public school."
+    },
+    "SJ040000": {
+      "code": "SJ040000",
+      "facet": "subject",
+      "title": "Legal services",
+      "path": [
+        "Legal services"
+      ],
+      "former_ntee": "I80",
+      "scope_note": "Provision of general legal services (legal counseling or representation in court) regarding criminal and/or civil matters."
+    },
+    "SJ040700": {
+      "code": "SJ040700",
+      "facet": "subject",
+      "title": "Public interest law",
+      "path": [
+        "Public interest law"
+      ],
+      "former_ntee": "I83",
+      "scope_note": "Class action litigation and lawsuits related to issues of interest to the public in general rather than assisting individuals."
+    },
+    "SM010000": {
+      "code": "SM010000",
+      "facet": "subject",
+      "title": "Agriculture",
+      "path": [
+        "Agriculture"
+      ],
+      "former_ntee": "K20",
+      "scope_note": "Activities that focus on development or improvement of food resources or food procurement."
+    },
+    "SN020300": {
+      "code": "SN020300",
+      "facet": "subject",
+      "title": "Employment",
+      "path": [
+        "Employment"
+      ],
+      "former_ntee": null,
+      "scope_note": "Activities that help community residents prepare for, find, secure and retain employment that is economically viable; and activities that help business and industrial sectors attract and/or develop a skilled and reliable workforce. This includes regulation and study of the relationship between employers and employees and the availability of jobs and workers, whether in industry, small business or the informal sector. For instance, job counseling, training, retraining, workforce development, certain job benefits, organized labor, and pension or retirement programs. May include new measures or enforcement of existing measures to ensure equal opportunity in the job market; and worker ownership of the company that employs them. See also: Labor rights; Economic justice; Occupational health (in Health); and Job services (in Human Services)."
+    },
+    "SN020302": {
+      "code": "SN020302",
+      "facet": "subject",
+      "title": "Job training",
+      "path": [
+        "Job training"
+      ],
+      "former_ntee": "J22",
+      "scope_note": "Training of people in the specific skills they will need to obtain employment in a particular industry or which provide work experience for youth or others who have no employment history. Participants generally have no job skills and are approaching the job market for the first time. Included are: apprenticeship programs; classroom training; internship programs; on-the-job training; and work experience. Includes JTPA program sites, summer youth employment program sites, senior community service employment program sites, privately sponsored employment training programs and employment projects that provide work experience for youth and other special populations."
+    },
+    "SR040100": {
+      "code": "SR040100",
+      "facet": "subject",
+      "title": "Immigrant and refugee rights",
+      "path": [
+        "Immigrant and refugee rights"
+      ],
+      "former_ntee": "R21",
+      "scope_note": "Work for passage and enforcement of laws and other social measures that protect and promote the rights and interests of immigrants, migrant workers, or refugees. For refugee resettlement programs and centers providing human services to immigrants use Immigrant and refugee services (in Human services). For study and implementation of public policies and regulations regarding the immigration and naturalization of people from other countries use Immigration and naturalization (in Public affairs)."
+    },
+    "SS030600": {
+      "code": "SS030600",
+      "facet": "subject",
+      "title": "Food aid",
+      "path": [
+        "Food aid"
+      ],
+      "former_ntee": "K30",
+      "scope_note": "Making free or low-cost food products available by distributing groceries, providing meals, or providing facilities for storing food. Use this term for provision of a wide range of food services or those that offer food-related services not broken out at a lower level. Included may be: food co-ops (group grocery purchasing arrangements); mini markets (which provide food, usually for older adults, at lower than retail prices); you-pick programs organized by farmers that allow consumers to pick their own produce at lower-than-retail prices; food gleaning programs organized by farmers that allow consumers to glean food from fields that have been professionally picked; Rent-a tree programs (which allow consumers to gather the fruit from a particular tree at lower-than-retail prices); community food storage facilities; and summer food service programs for low-income children and youth."
+    },
+    "SS030601": {
+      "code": "SS030601",
+      "facet": "subject",
+      "title": "Food banks",
+      "path": [
+        "Food banks"
+      ],
+      "former_ntee": "K31",
+      "scope_note": "Programs, also known as food closets, that gather, store and distribute food to the public at no charge or at low cost. Includes food banks which gather, store and distribute to participating charitable agencies government surplus food products and edible but marketable food that has been acquired from other sources; and food pantries which acquire food through donations, canned food drives, food bank programs or direct purchase and distribute the food to people who are in emergency situations; programs that distribute food vouchers that can be redeemed in a grocery store for food; food distribution programs that are authorized, on a periodic basis, to acquire targeted surplus commodities stockpiled by the federal government and distribute them to people who qualify for this service on the basis of income; and programs that collect, warehouse and distribute the surplus commodities to food banks and pantries."
+    },
+    "SS090300": {
+      "code": "SS090300",
+      "facet": "subject",
+      "title": "Immigrant and refugee services",
+      "path": [
+        "Immigrant and refugee services"
+      ],
+      "former_ntee": null,
+      "scope_note": "Multipurpose centers and services that serve as focal points for specific immigrant and refugee groups within the community and which offer a wide variety of services and activities to meet the social, educational, economic, recreational and other needs of participants in culturally appropriate ways. Also included are language interpretation and translation services and citizenship services (e.g., citizenship assistance centers, organizations that administer citizenship interviews and tests and rights counseling for people who are undocumented). For immigrant or refugee rights, use Immigrant and refugee rights (in Human rights). For services targeting specific immigrant or refugee communities, use the appropriate single-service term and the appropriate Population Group term."
+    }
+  }
+}

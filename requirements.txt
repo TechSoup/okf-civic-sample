@@ -1,3 +1,5 @@
-# Validation suite (scripts/validate.py)
+# Tooling: scripts/validate.py, scripts/build_hubs.py, scripts/extract_pcs.py
+# Everything runs offline. extract_pcs.py reads Candid's published spreadsheet
+# with the standard library only, so no Excel dependency is needed here.
 PyYAML>=6.0
 jsonschema>=4.0

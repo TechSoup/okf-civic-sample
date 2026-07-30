@@ -8,7 +8,7 @@ THIRD-PARTY ATTRIBUTION
 This project implements and builds upon the Open Knowledge Format (OKF)
 specification, maintained by Google LLC under the Apache License, Version 2.0.
 
-  Open Knowledge Format (OKF) v0.1
+  Open Knowledge Format (OKF) v0.2
   Copyright Google LLC
   Source:  https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf
   License: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/LICENSE.md
@@ -17,16 +17,20 @@ A copy of the Apache License, Version 2.0 is available at:
   http://www.apache.org/licenses/LICENSE-2.0
 
 The OKF specification defines the bundle structure (markdown files with YAML
-frontmatter, the `type` field, `okf_version`, index files, and link-based graph
-edges) that this sample conforms to. The `x-civic` profile and all sample
-content in this bundle are original works by TechSoup.
+frontmatter, the `type` field, `okf_version`, reserved index and log files, the
+provenance/trust/lifecycle field families, the actor convention, and link-based
+graph edges) that this collection conforms to. The `x-civic` profile and all
+sample content here are original works by TechSoup.
 
 -----------------------------------------------------------------------------
 
-The civic/0.3 profile recommends Candid's Philanthropy Classification System
-(PCS) as the controlled vocabulary for the `eligibility.pcs_subject` and
-`eligibility.org_types` fields. Any PCS codes, labels, or definitions carried
-in records using this profile are derived from:
+The civic/0.6 profile REQUIRES Candid's Philanthropy Classification System
+(PCS) as the controlled vocabulary for its three classification fields —
+`x-civic.subject` (PCS Subject facet), `x-civic.population` (PCS Population
+facet), and `x-civic.org_type` (PCS OrgType facet). PCS codes, titles, and
+scope notes carried in this collection — including the vendored subset at
+`_shared/pcs/pcs-codes.json` and the generated hub pages in `_shared/pcs/` —
+are derived from:
 
   Philanthropy Classification System (PCS)
   Copyright Candid
@@ -34,9 +38,21 @@ in records using this profile are derived from:
   License: Creative Commons Attribution 4.0 International (CC BY 4.0)
            https://creativecommons.org/licenses/by/4.0/
 
-PCS is used under CC BY 4.0 with attribution to Candid; where this bundle maps
-or subsets PCS, those are modifications by TechSoup. PCS must not be placed
-behind a premium charge for the ability to use it.
+PCS is used under CC BY 4.0 with attribution to Candid. Titles and scope notes
+are reproduced UNMODIFIED. The modification TechSoup makes is one of selection
+only: `_shared/pcs/pcs-codes.json` is a SUBSET containing just the codes this
+collection references, extracted by `scripts/extract_pcs.py` from Candid's
+published 2024 taxonomy. No code was invented, renamed, re-parented, or
+altered. Where no PCS code fit an organization's legal form, a level-1 parent
+code was used deliberately and the record says so, rather than a closer-looking
+child being asserted.
+
+PCS must not be placed behind a premium charge for the ability to use it.
+
+Note on the collection's contents: the fifteen organizations described here are
+FABRICATED and every record describing one carries `synthetic: true`. The PCS
+codes and the geographic places are real and carry `synthetic: false`. No real
+organization's data appears anywhere in this collection.
 
 =============================================================================
 LICENSES SUMMARY

@@ -1,118 +1,227 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/TechSoup/okf-civic-sample/schemas/civic_schema.json",
-  "title": "OKF Civic Profile (civic/0.5) record schema",
-  "description": "Validates core OKF fields plus the x-civic 0.5 profile. Core OKF requires only `type`; x-civic conventions are conditional on `type` and only enforced when an x-civic block is present. civic/0.5 adds federation: bundle namespace/base_uri and federated relation targets (CURIE namespace:slug).",
+  "title": "OKF Civic Profile (civic/0.6) record schema",
+  "description": "Validates a record's frontmatter against core OKF v0.2 plus the x-civic civic/0.6 profile. Core OKF requires only `type`; the profile requires four fields, and only on a record whose type is `org`. Everything else is optional and additive. Nothing here may cause a consumer to reject a document: OKF v0.2 §11 requires tolerance of unknown keys, so this schema deliberately does NOT set additionalProperties:false at the document level.",
   "type": "object",
   "required": ["type"],
   "properties": {
     "type": { "type": "string", "minLength": 1 },
     "title": { "type": "string" },
     "description": { "type": "string" },
-    "okf_version": { "type": "string" },
     "resource": { "type": "string" },
+    "aliases": { "type": "array", "items": { "type": "string" } },
     "tags": { "type": "array", "items": { "type": "string" } },
-    "timestamp": {},
+
+    "synthetic": {
+      "type": "boolean",
+      "description": "Producer key, not part of x-civic. True when the record describes a fabricated thing. Marked at record level because files get separated from their collection README. Proposed for core OKF rather than the profile: 'is this real' is not civic-specific."
+    },
+
+    "status": {
+      "enum": ["draft", "stable", "deprecated"],
+      "description": "OKF v0.2 §5.4. Absent implies `stable`."
+    },
+    "stale_after": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "OKF v0.2 §5.5. Absolute date; the record is stale when today >= this."
+    },
+    "generated": { "$ref": "#/$defs/actorEvent" },
+    "verified": {
+      "description": "OKF v0.2 §5.2. A list of verification events, or a single bare mapping which consumers MUST treat as a one-element list. Its ABSENCE is meaningful: no `verified` key is the `unverified` trust tier (§5.3) and MUST NOT cause rejection.",
+      "oneOf": [
+        { "$ref": "#/$defs/actorEvent" },
+        { "type": "array", "items": { "$ref": "#/$defs/actorEvent" } }
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "description": "OKF v0.2 §5.1. Per-claim attribution is by markdown footnote keyed to `sources[].id`.",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "usage_window": {
+      "type": "object",
+      "properties": { "from": {}, "to": {} }
+    },
+
     "x-civic": { "$ref": "#/$defs/xcivic" }
   },
+
   "allOf": [
     {
-      "comment": "Profile-scope rule: any record carrying an x-civic block must declare the profile version.",
+      "comment": "A record carrying an x-civic block must declare which profile version it conforms to.",
       "if": { "required": ["x-civic"] },
       "then": { "properties": { "x-civic": { "required": ["profile"] } } }
     },
     {
-      "comment": "Offers carry an offer block and a vendor_url.",
-      "if": { "properties": { "type": { "const": "offer" } }, "required": ["type"] },
+      "comment": "THE profile requirement: an organization record carries exactly these four fields plus the declaration. Nothing else in this schema is required.",
+      "if": {
+        "properties": { "type": { "const": "org" } },
+        "required": ["type", "x-civic"]
+      },
       "then": {
-        "required": ["x-civic"],
         "properties": {
           "x-civic": {
-            "required": ["profile", "status", "offer", "provenance"],
-            "properties": { "provenance": { "required": ["vendor_url"] } }
+            "required": ["profile", "subject", "population", "org_type", "registration_country"]
           }
         }
       }
     },
     {
-      "comment": "Meal sites carry location, meals, season and a range_id.",
-      "if": { "properties": { "type": { "const": "meal-site" } }, "required": ["type"] },
-      "then": {
-        "required": ["x-civic"],
-        "properties": {
-          "x-civic": {
-            "required": ["profile", "status", "location", "meals", "season", "operational_status", "provenance"],
-            "properties": { "provenance": { "required": ["range_id"] } }
-          }
-        }
-      }
+      "comment": "`timestamp` was superseded by `generated.at` in OKF v0.2 (§13.1).",
+      "not": { "required": ["timestamp"] }
     }
   ],
+
   "$defs": {
+    "actorEvent": {
+      "type": "object",
+      "required": ["by"],
+      "properties": {
+        "by": { "$ref": "#/$defs/actor" },
+        "at": { "type": "string" }
+      }
+    },
+    "actor": {
+      "type": "string",
+      "pattern": "^(human:[^\\s]+|process:[^\\s]+|[^\\s/]+/[^\\s]+)$",
+      "description": "OKF v0.2 §7. `<producer>/<version>` for agents and tools, `human:<id>` for a person, `process:<id>` for an automated process. Trust tiers key off the `human:` prefix."
+    },
+    "source": {
+      "type": "object",
+      "required": ["resource"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable key used to attribute individual claims from the body via a `[^id]` footnote. Keyed rather than positional so reordering the list cannot silently misattribute."
+        },
+        "resource": {
+          "type": "string",
+          "description": "A followable artifact (URL or bundle-relative path) OR a scope descriptor it cannot follow."
+        },
+        "title": { "type": "string" },
+        "author": { "$ref": "#/$defs/actor" },
+        "usage_count": { "type": "integer", "minimum": 0 },
+        "last_modified": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+      }
+    },
+
+    "pcsSubject":    { "type": "string", "pattern": "^S[A-Z]\\d{6}$" },
+    "pcsPopulation": { "type": "string", "pattern": "^P[A-Z]\\d{6}$" },
+    "pcsOrgType":    { "type": "string", "pattern": "^E[A-Z]\\d{6}$" },
+
     "xcivic": {
       "type": "object",
+      "description": "The civic profile namespace. A generic OKF consumer ignores this entire object; per §11 its contents can never make a bundle non-conformant with core OKF.",
       "properties": {
-        "profile": { "const": "civic/0.5" },
-        "status": { "enum": ["PROPOSED", "INITIALIZED", "ACTIVE", "ARCHIVED", "REJECTED"] },
-        "category": { "type": "string" },
-        "sub_category": { "type": "string" },
-        "capability": { "type": "string" },
-        "namespace": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
-        "base_uri": { "type": "string" },
-        "reason": { "type": "string" },
-        "operational_status": { "type": "string" },
+        "profile": { "const": "civic/0.6" },
+
+        "subject": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/pcsSubject" },
+          "description": "REQUIRED on an org record. Candid PCS Subject facet — what the organization does. Codes must exist in the taxonomy; scripts/validate.py resolves them against the vendored subset."
+        },
+        "population": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/pcsPopulation" },
+          "description": "REQUIRED on an org record. Candid PCS Population facet — who the organization serves."
+        },
+        "org_type": {
+          "$ref": "#/$defs/pcsOrgType",
+          "description": "REQUIRED on an org record. Candid PCS OrgType facet. Use a level-1 parent deliberately where no child matches the legal form, and say so in org_type_note."
+        },
+        "registration_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "REQUIRED on an org record. ISO 3166-1 alpha-2. Distinct from operating geography."
+        },
+
+        "provides": {
+          "type": "string",
+          "description": "Optional. The specific function the organization offers — the substitution and matching axis. No controlled vocabulary yet; see the profile's open questions."
+        },
+        "org_type_note": { "type": "string" },
+        "classification_note": { "type": "string" },
         "maintainer": { "type": "string" },
-        "serves": { "type": "string" },
-        "service_model": { "type": "string" },
-        "meals": { "type": "array", "items": { "type": "string" } },
-        "season": { "type": "object" },
-        "location": { "type": "object" },
-        "offer": {
+
+        "registration": {
           "type": "object",
-          "required": ["type", "summary"],
+          "description": "Optional. Deliberately not required: an organization with no usable registry record must remain representable.",
           "properties": {
-            "type": { "type": "string" },
-            "summary": { "type": "string" }
+            "scheme": { "type": "string" },
+            "id": { "type": "string" },
+            "tax_status": { "type": "string" },
+            "legal_form": { "type": "string" }
           }
         },
-        "eligibility": {
+
+        "budget_currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "Optional, ISO 4217. An amount without a currency is not a fact. Amounts are never pre-converted."
+        },
+        "budget": {
           "type": "object",
           "properties": {
-            "eligible_audiences": { "type": "array", "items": { "type": "string" } },
-            "regions": { "type": "array" },
-            "pcs_subject": { "type": "array" },
-            "rules": { "type": "string" }
+            "amount": { "type": "number" },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+            "period": { "type": "string" },
+            "basis": { "type": "string" }
           }
         },
-        "provenance": {
-          "type": "object",
-          "properties": {
-            "source": { "type": "string" },
-            "vendor_url": { "type": "string" },
-            "range_id": { "type": "string" }
+
+        "operating_locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+              "subdivision": { "type": "string" },
+              "locality": { "type": "string" }
+            }
           }
         },
+        "situation": {
+          "type": "string",
+          "description": "Optional. Slug of a shared place node. Community context belongs to the place, not to each organization operating there."
+        },
+
+        "ntee": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional enrichment. A US IRS vocabulary: it cannot reach non-US organizations, so a rollup on it silently under-covers a mixed corpus."
+        },
+        "sdg": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional enrichment. Global but coarse."
+        },
+
         "relations": {
           "type": "array",
-          "items": { "$ref": "#/$defs/relation" }
-        }
-      },
-      "allOf": [
-        {
-          "comment": "A reason is required to retain an ARCHIVED or REJECTED record.",
-          "if": { "properties": { "status": { "enum": ["ARCHIVED", "REJECTED"] } }, "required": ["status"] },
-          "then": { "required": ["reason"] }
-        }
-      ]
-    },
-    "relation": {
-      "type": "object",
-      "required": ["target", "type"],
-      "additionalProperties": false,
-      "properties": {
-        "target": { "type": "string", "minLength": 1 },
-        "type": { "enum": ["complements", "alternative", "conflicts", "requires", "related", "learn-with"] },
-        "note": { "type": "string" }
+          "description": "Optional. ASSERTED organization-to-organization edges only — relationships that cannot be computed. Substitution and complementarity are derived from provides + situation + population and are deliberately not stored.",
+          "items": {
+            "type": "object",
+            "required": ["target", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "target": { "type": "string", "minLength": 1 },
+              "type": { "enum": ["partners_with", "coalition_with", "learn_with"] },
+              "note": { "type": "string" }
+            }
+          }
+        },
+
+        "verifiable_by": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional. Who could answer 'how do I know this?'. Distinct from `sources`, which says where a claim came from. A bundle carries a path toward validation, not a passport."
+        },
+        "data_protection_regime": { "type": "string" },
+        "project_shape": { "type": "string" }
       }
     }
   }
