@@ -1,0 +1,13 @@
+{
+  "changemaker": {
+    "name": "{{organization_name}}"
+  },
+  "fields": [
+    {
+      "baseFieldShortCode": "{{code}}",
+      "type": "string",
+      "value": "{{value}}",
+      "source": "{{source}}"
+    }
+  ]
+}

@@ -218,6 +218,29 @@ Three constraints in that file that no schema field would have captured:
 
 ---
 
+## 9. "What does the organization say for itself?" — the org-voice layer, deliberately outside the profile
+
+Every bundle also carries `impact.md` and `what_i_need_funding_for.md`. Both say so in their own frontmatter: *"Not part of the published civic/0.6 profile."* Nothing under `x-civic` requires them, resolves them against a vocabulary, or reads them for conformance.
+
+```python
+import glob, re, yaml
+
+def doc(path):
+    body = open(path).read()
+    fm = re.match(r'^---\n(.*?)\n---', body, re.S).group(1)
+    return yaml.safe_load(fm), body.split('---', 2)[2].strip()
+
+for p in sorted(glob.glob('organizations/synthetic-*/what_i_need_funding_for.md')):
+    meta, prose = doc(p)
+    print(meta['title'])
+```
+
+They exist for a narrower reason than every other optional layer in this collection: not to be queried, but to be **read** — by a person deciding what to fund, or by an agent drafting a grant narrative or a volunteer scope. `impact.md` is the organization's own account of what happened; `what_i_need_funding_for.md` is its own account of what it needs next, in its own words, not backed into a funder's category. Frogtown Table's is explicit about it: *"flexible support that doesn't require us to build out grant-specific reporting infrastructure matters more to us than a larger, narrower award would."* No `provides` code or budget figure says that.
+
+**What it costs:** nothing to conformance — these are two more optional `type` values core OKF already tolerates (§11). **What it buys:** exactly the kind of verbose, agent-ready prose [use case 8](#8-point-an-agent-at-a-bundle) argues for, this time pointed at a funder's question instead of a volunteer's.
+
+---
+
 ## What each use case cost
 
 | Use case | Needs beyond the four required fields |
@@ -230,6 +253,7 @@ Three constraints in that file that no schema field would have captured:
 | 6. Ranking | don't |
 | 7. Emergent vocabulary | prose wikilinks; no schema at all |
 | 8. Agent scoping a project | the document bodies, and an org-authored constraints file |
+| 9. What the org says for itself | `impact.md` / `what_i_need_funding_for.md`; outside the profile entirely |
 
 **Four fields make a bundle findable. The optional layers make it useful. The prose makes it actionable.** That is the argument for a small required core, and it is why `civic/0.6` stops where it does.
 

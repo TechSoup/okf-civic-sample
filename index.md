@@ -16,6 +16,7 @@ okf_version: "0.2"
 
 * [docs/civic-profile.md](docs/civic-profile.md) - the `x-civic` civic profile, v0.6. Five required fields
 * [docs/use-cases.md](docs/use-cases.md) - what the graph makes answerable, with the queries written out
+* [docs/data-dictionary.md](docs/data-dictionary.md) - lookup tables for every file and frontmatter field in a bundle
 
 # Organization bundles
 
@@ -48,3 +49,5 @@ All fifteen live under one folder.
 * [scripts/validate.py](scripts/validate.py) - conformance checker for both levels
 * [scripts/build_hubs.py](scripts/build_hubs.py) - regenerates every hub membership list from the org frontmatter
 * [scripts/extract_pcs.py](scripts/extract_pcs.py) - vendors the attributed Candid PCS subset
+* [scripts/generate_org_json.py](scripts/generate_org_json.py) - consolidates one organization's frontmatter into a single JSON file
+* [scripts/generate_mapped_json.py](scripts/generate_mapped_json.py) - re-expresses an organization's frontmatter against another schema (e.g. [Philanthropy Data Commons](https://philanthropydatacommons.org/base-fields-list/)) via `scripts/mappings/`; see [scripts/README.md](scripts/README.md)
