@@ -1,0 +1,220 @@
+{
+  "changemaker": {
+    "name": "synthetic-Cumberland Gap Health Cooperative"
+  },
+  "fields": [
+    {
+      "baseFieldShortCode": "organization_name",
+      "type": "string",
+      "value": "synthetic-Cumberland Gap Health Cooperative",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_overview",
+      "type": "string",
+      "value": "A fabricated small rural clinic in Letcher County, Kentucky, where the broadband problem belongs to the patients as much as to the organization.",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_dba_name",
+      "type": "string",
+      "value": [
+        "synthetic-Cumberland Gap Health",
+        "Cumberland Gap Health Cooperative"
+      ],
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#aliases",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_status",
+      "type": "string",
+      "value": "stable",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#status",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_country",
+      "type": "string",
+      "value": "US",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#x-civic.registration_country",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_tax_id",
+      "type": "string",
+      "value": "00-1000007",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#x-civic.registration.id",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_ntee_code",
+      "type": "string",
+      "value": [
+        "E32"
+      ],
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#x-civic.ntee",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_geographic_area",
+      "type": "string",
+      "value": "US-KY-letcher",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/README.md#x-civic.situation",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_project_outcomes",
+      "type": "string",
+      "value": "Synthetic annual results, illustrative only. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/impact.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "community_definition_overview",
+      "type": "string",
+      "value": "The Letcher County patients the organization serves. Fabricated.",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/population.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_related_programs",
+      "type": "string",
+      "value": "What the organization runs. Fabricated.",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/programs.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_name",
+      "type": "string",
+      "value": "synthetic-Cumberland Gap Health Cooperative — What I need funding for",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/what_i_need_funding_for.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_funding_summary",
+      "type": "string",
+      "value": "Synthetic funding priorities, in the organization's own voice. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-cumberland-gap-health-cooperative/what_i_need_funding_for.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    }
+  ]
+}
