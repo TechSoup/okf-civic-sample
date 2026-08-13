@@ -62,6 +62,8 @@ It is a **mid-sized** Polish NGO — annual revenue around **PLN 4,800,000**, as
 - **Who it serves →** [population](population.md) — refugees and migrants in Poland; see also [SDG-16](../../_shared/sdg/SDG-16.md) (peace, justice, strong institutions) and [SDG-10](../../_shared/sdg/SDG-10.md) (reduced inequalities).
 - **Where →** [PL-MZ-warszawa](../../_shared/situations/PL-MZ-warszawa.md) (Warsaw, Mazowieckie, Poland).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, at 92% confidence, established through a **registry more machine-readable than the American one**.
 - **What it runs →** [technology](technology/index.md). Where GDPR changes the answers.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

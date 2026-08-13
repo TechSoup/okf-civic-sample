@@ -72,7 +72,7 @@ Every bundle in this collection carries far more than four fields. All of it is 
 | `relations` | Asserted organization-to-organization edges (`partners_with`, `coalition_with`, `learn_with`) |
 | `verifiable_by` | Who could answer "how do I know this?" |
 | `org_type_note`, `classification_note` | Why a code was chosen, or deliberately not assigned |
-| Whole documents | `population.md`, `programs.md`, `technology/`, `technical-volunteers/`, `verification.md` |
+| Whole documents | `population.md`, `programs.md`, `impact.md`, `what_i_need_funding_for.md`, `technology/`, `technical-volunteers/`, `verification.md` |
 
 **The rule: a required field must be answerable by every organization in the world. Anything else is an enrichment.** The three international bundles in this collection exist to test that rule, and one of them — [Nyando](../organizations/synthetic-nyando-community-health-trust/README.md), which has no usable registry record — is the reason `registration.id` is not required.
 

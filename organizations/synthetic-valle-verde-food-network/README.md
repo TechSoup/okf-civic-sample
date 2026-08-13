@@ -59,6 +59,8 @@ It is a **mid-sized** nonprofit — annual revenue around **$2,100,000**, assets
 - **Who it serves →** [population](population.md) — farmworker households across unincorporated Fresno County; see also [SDG-02](../../_shared/sdg/SDG-02.md) (zero hunger) and [SDG-01](../../_shared/sdg/SDG-01.md) (no poverty).
 - **Where →** [US-CA-fresno](../../_shared/situations/US-CA-fresno.md) (Fresno County, California).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at high confidence (0.93).
 - **What it runs →** [technology](technology/index.md). Read this one for what happens when your service area has no cell coverage.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

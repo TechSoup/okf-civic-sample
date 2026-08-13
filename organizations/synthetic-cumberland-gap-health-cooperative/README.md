@@ -59,6 +59,8 @@ It is a **small** nonprofit — annual revenue around **$1,100,000**, assets aro
 - **Who it serves →** [population](population.md) — Letcher County residents; see also [SDG-03](../../_shared/sdg/SDG-03.md) (good health).
 - **Where →** [US-KY-letcher](../../_shared/situations/US-KY-letcher.md) (Letcher County, Kentucky).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, at 90% confidence, the lowest of the clean US determinations.
 - **What it runs →** [technology](technology/index.md). Read it for the failed telehealth programme, which failed for the right reason.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

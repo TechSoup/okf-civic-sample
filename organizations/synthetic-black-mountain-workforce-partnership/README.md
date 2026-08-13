@@ -59,6 +59,8 @@ It is a **small** nonprofit — annual revenue around **$920,000**, assets aroun
 - **Who it serves →** [population](population.md) — working-age adults in Letcher County; see also [SDG-08](../../_shared/sdg/SDG-08.md) (decent work), [SDG-04](../../_shared/sdg/SDG-04.md) (quality education), and [SDG-01](../../_shared/sdg/SDG-01.md) (no poverty).
 - **Where →** [US-KY-letcher](../../_shared/situations/US-KY-letcher.md) (Letcher County, Kentucky).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at 92% confidence.
 - **What it runs →** [technology](technology/index.md). Including a laptop lending library that is doing more than anyone planned.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

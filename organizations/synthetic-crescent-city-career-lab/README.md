@@ -65,6 +65,8 @@ It is a **mid-sized** nonprofit — annual revenue around **$1,700,000**, assets
 - **Who it serves →** [population](population.md) — working adults changing careers; see also [SDG-08](../../_shared/sdg/SDG-08.md) (decent work) and [SDG-04](../../_shared/sdg/SDG-04.md) (quality education).
 - **Where →** [US-LA-orleans](../../_shared/situations/US-LA-orleans.md) (New Orleans, Orleans Parish, Louisiana).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — **its determination has lapsed.** Read that file before using this bundle for anything.
 - **What it runs →** [technology](technology/index.md).
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md). The only AI project in the collection that touches no personal data at all.

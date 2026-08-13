@@ -46,9 +46,9 @@ It is also a working **Obsidian vault**. Clone it, open the folder in [Obsidian]
 ```
 organizations/     the fifteen org bundles, one folder each — see its own README
 _shared/           classification and place nodes the bundles link to
-docs/              the civic profile, and worked use cases
+docs/              the civic profile, worked use cases, and the field-level data dictionary
 schemas/           JSON Schema for the profile, plus fixtures that must fail
-scripts/           validator, hub generator, PCS extractor
+scripts/           validator, hub generator, PCS extractor, per-org JSON export, and schema-mapping (e.g. PDC)
 ```
 
 Everything that describes an organization is under [`organizations/`](organizations/README.md), which carries its own README covering what the bundles are for, what is in one, and which three are deliberately broken.
@@ -68,7 +68,7 @@ x-civic:
 
 That is the whole thing. Core OKF requires only `type`; the profile adds four bindings to controlled vocabularies and stops.
 
-Everything else the bundles carry — programs, populations in prose, technology inventories, capability assessments, volunteer constraints and requests, partnership and coalition edges, budgets, SDG and NTEE codes, place nodes, third-party determinations — is **optional enrichment**. It makes a bundle far more useful and **none of it affects conformance**. See [`docs/civic-profile.md`](docs/civic-profile.md) for the reasoning and [`docs/use-cases.md`](docs/use-cases.md) for what the optional layers buy you.
+Everything else the bundles carry — programs, populations in prose, impact narratives, funding priorities in the organization's own voice, technology inventories, capability assessments, volunteer constraints and requests, partnership and coalition edges, budgets, SDG and NTEE codes, place nodes, third-party determinations — is **optional enrichment**. It makes a bundle far more useful and **none of it affects conformance**. See [`docs/civic-profile.md`](docs/civic-profile.md) for the reasoning, [`docs/use-cases.md`](docs/use-cases.md) for what the optional layers buy you, and [`docs/data-dictionary.md`](docs/data-dictionary.md) for the field-by-field reference.
 
 ## The idea worth stealing: two layers of link
 
@@ -152,6 +152,8 @@ python3 -m venv venv
 ./venv/bin/python scripts/validate.py --terms   # the emergent vocabulary
 ./venv/bin/python scripts/build_hubs.py         # regenerate every membership list
 ```
+
+For per-organization JSON export and mapping a bundle's frontmatter onto another schema (a worked example targets [Philanthropy Data Commons](https://philanthropydatacommons.org/base-fields-list/)), see [`scripts/README.md`](scripts/README.md).
 
 ## The membership lists are generated
 

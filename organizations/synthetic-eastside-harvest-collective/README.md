@@ -59,6 +59,8 @@ It is a **mid-small** nonprofit. Its address is **1440 Sunrise Row, Detroit, MI 
 - **Who it serves →** [population](population.md) — east-side Detroit households; see also [SDG-02](../../_shared/sdg/SDG-02.md) (zero hunger).
 - **Where →** [US-MI-detroit](../../_shared/situations/US-MI-detroit.md) (Detroit, Wayne County, Michigan).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, but with an open flag. Read it before you use the budget number.
 - **What it runs →** [technology](technology/index.md).
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

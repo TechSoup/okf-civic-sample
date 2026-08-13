@@ -73,7 +73,7 @@ Twelve are clean. Three carry a deliberate defect, described below.
 
 ## What is in a bundle
 
-Every folder has the same twelve files, so anything you write against one works against all fifteen.
+Every folder has the same fourteen files, so anything you write against one works against all fifteen.
 
 | File | What it holds |
 |---|---|
@@ -82,6 +82,8 @@ Every folder has the same twelve files, so anything you write against one works 
 | `log.md` | Edit history for the bundle, date-grouped. Reserved, carries no frontmatter |
 | `population.md` | Who the organization serves, in prose. Where the emergent vocabulary lives |
 | `programs.md` | What it runs |
+| `impact.md` | Outcomes and results, in the organization's own voice. Optional enrichment, not part of the published profile |
+| `what_i_need_funding_for.md` | Funding priorities, in the organization's own voice. Optional enrichment, not part of the published profile |
 | `verification.md` | A dated third-party determination about the organization — or, in one case, the absence of one |
 | `technology/inventory.md` | What software it actually runs |
 | `technology/capability.md` | An assessment of what it can do with that software |
@@ -121,4 +123,5 @@ Validate with `../scripts/validate.py`, which checks core OKF v0.2 and civic/0.6
 - [Collection README](../README.md) — what the whole repository is, and the reasoning behind the profile
 - [`docs/civic-profile.md`](../docs/civic-profile.md) — the `x-civic` profile, v0.6. Five required fields
 - [`docs/use-cases.md`](../docs/use-cases.md) — worked examples with the queries written out
+- [`docs/data-dictionary.md`](../docs/data-dictionary.md) — lookup tables for every file and frontmatter field in a bundle
 - [`_shared/`](../_shared/index.md) — the classification and place nodes these bundles link to
