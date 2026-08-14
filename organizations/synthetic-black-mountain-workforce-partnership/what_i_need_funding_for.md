@@ -1,6 +1,6 @@
 ---
 type: funding_need
-title: "synthetic-Cumberland Gap Health Cooperative — What I need funding for"
+title: "synthetic-Black Mountain Workforce Partnership — What I need funding for"
 description: "Synthetic funding priorities, in the organization's own voice. Not part of the published civic/0.6 profile."
 tags: ["funding-need", "synthetic"]
 synthetic: true
