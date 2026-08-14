@@ -59,6 +59,8 @@ It is a **mid-large** nonprofit for legal aid — annual revenue around **$2,600
 - **Who it serves →** [population](population.md) — people in removal proceedings and their families; see also [SDG-16](../../_shared/sdg/SDG-16.md) (peace, justice, strong institutions) and [SDG-10](../../_shared/sdg/SDG-10.md) (reduced inequalities).
 - **Where →** [US-MN-saint-paul](../../_shared/situations/US-MN-saint-paul.md) (Saint Paul, Ramsey County, Minnesota).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at 93% confidence.
 - **What it runs →** [technology](technology/index.md). Grew fourfold in four years and the systems show it.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md). **Its constraints file is a threat model rather than a privacy policy** — the sharpest security posture in this collection, and for concrete reasons.

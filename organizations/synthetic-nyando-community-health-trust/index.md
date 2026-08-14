@@ -14,6 +14,8 @@ okf_version: "0.2"
 * [population.md](population.md) - who it serves
 * [programs.md](programs.md) - what it runs
 * [verification.md](verification.md) - an optional third-party determination about this organization
+* [impact.md](impact.md) - outcomes and results, in the organization's own voice
+* [what_i_need_funding_for.md](what_i_need_funding_for.md) - funding priorities, in the organization's own voice
 
 # Technology
 

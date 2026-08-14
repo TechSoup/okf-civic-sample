@@ -60,6 +60,8 @@ It is a **small** nonprofit — annual revenue around **$680,000**, assets aroun
 - **Who it serves →** [population](population.md) — the residents of the corridor; see also [SDG-03](../../_shared/sdg/SDG-03.md) (good health) and [SDG-11](../../_shared/sdg/SDG-11.md) (sustainable cities).
 - **Where →** [US-MI-detroit](../../_shared/situations/US-MI-detroit.md) (Detroit, Wayne County, Michigan).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at high confidence (0.94).
 - **What it runs →** [technology](technology/index.md). Note that this organization's technology *is* its program, which is unusual in this collection.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

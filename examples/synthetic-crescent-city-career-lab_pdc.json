@@ -1,0 +1,221 @@
+{
+  "changemaker": {
+    "name": "synthetic-Crescent City Career Lab"
+  },
+  "fields": [
+    {
+      "baseFieldShortCode": "organization_name",
+      "type": "string",
+      "value": "synthetic-Crescent City Career Lab",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_overview",
+      "type": "string",
+      "value": "A fabricated New Orleans workforce organization whose verification determination has expired — an organization in good standing with an invalid record.",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_dba_name",
+      "type": "string",
+      "value": [
+        "synthetic-Crescent City Career Lab",
+        "Crescent City Career Lab"
+      ],
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#aliases",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_status",
+      "type": "string",
+      "value": "stable",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#status",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_country",
+      "type": "string",
+      "value": "US",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#x-civic.registration_country",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_tax_id",
+      "type": "string",
+      "value": "00-1000012",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#x-civic.registration.id",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_ntee_code",
+      "type": "string",
+      "value": [
+        "J22",
+        "J20"
+      ],
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#x-civic.ntee",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_geographic_area",
+      "type": "string",
+      "value": "US-LA-orleans",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/README.md#x-civic.situation",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_project_outcomes",
+      "type": "string",
+      "value": "Synthetic annual results, illustrative only. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/impact.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "community_definition_overview",
+      "type": "string",
+      "value": "The working adults changing careers that the organization serves. Fabricated.",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/population.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_related_programs",
+      "type": "string",
+      "value": "What the organization runs. Fabricated.",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/programs.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_name",
+      "type": "string",
+      "value": "synthetic-Crescent City Career Lab — What I need funding for",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/what_i_need_funding_for.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_funding_summary",
+      "type": "string",
+      "value": "Synthetic funding priorities, in the organization's own voice. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-crescent-city-career-lab/what_i_need_funding_for.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    }
+  ]
+}

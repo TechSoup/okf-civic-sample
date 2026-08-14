@@ -7,7 +7,17 @@
       "baseFieldShortCode": "{{code}}",
       "type": "string",
       "value": "{{value}}",
-      "source": "{{source}}"
+      "batch": {
+        "notes": "{{source}}",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
     }
   ]
 }

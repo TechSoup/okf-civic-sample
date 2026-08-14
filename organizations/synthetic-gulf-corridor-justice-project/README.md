@@ -61,6 +61,8 @@ It is a **mid-sized** nonprofit — annual revenue around **$1,500,000**, assets
 - **Who it serves →** [population](population.md) — corridor residents; see also [SDG-03](../../_shared/sdg/SDG-03.md) (good health), [SDG-13](../../_shared/sdg/SDG-13.md) (climate action), and [SDG-16](../../_shared/sdg/SDG-16.md) (peace, justice, strong institutions).
 - **Where →** [US-LA-orleans](../../_shared/situations/US-LA-orleans.md) (New Orleans and the adjacent river parishes, Louisiana).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at 91% confidence.
 - **What it runs →** [technology](technology/index.md). A public archive that is somebody's target.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).
