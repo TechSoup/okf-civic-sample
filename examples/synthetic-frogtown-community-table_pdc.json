@@ -1,0 +1,302 @@
+{
+  "changemaker": {
+    "name": "synthetic-Frogtown Community Table"
+  },
+  "fields": [
+    {
+      "baseFieldShortCode": "organization_name",
+      "type": "string",
+      "value": "synthetic-Frogtown Community Table",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_overview",
+      "type": "string",
+      "value": "A fabricated culturally-specific food shelf in Saint Paul, Minnesota.",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_dba_name",
+      "type": "string",
+      "value": [
+        "synthetic-Frogtown Table",
+        "Frogtown Community Table"
+      ],
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#aliases",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_status",
+      "type": "string",
+      "value": "stable",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#status",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_country",
+      "type": "string",
+      "value": "US",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.registration_country",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_tax_id",
+      "type": "string",
+      "value": "00-1000009",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.registration.id",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_operating_budget",
+      "type": "string",
+      "value": 430000,
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.budget.amount",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_fiscal_year",
+      "type": "string",
+      "value": "FY2025",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.budget.period",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_country",
+      "type": "string",
+      "value": "US",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.operating_locations[0].country",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_state_province",
+      "type": "string",
+      "value": "US-MN",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.operating_locations[0].subdivision",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_city",
+      "type": "string",
+      "value": "Frogtown, Saint Paul, Ramsey County, Minnesota",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.operating_locations[0].locality",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_ntee_code",
+      "type": "string",
+      "value": [
+        "K30",
+        "K31",
+        "P84"
+      ],
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.ntee",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_geographic_area",
+      "type": "string",
+      "value": "US-MN-saint-paul",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/README.md#x-civic.situation",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_project_outcomes",
+      "type": "string",
+      "value": "Synthetic annual results, illustrative only. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/impact.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "community_definition_overview",
+      "type": "string",
+      "value": "The immigrant and refugee households the organization serves, and why a demographic list is the least useful half of it.",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/population.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_related_programs",
+      "type": "string",
+      "value": "What the organization runs, and the one room doing more than the program list admits.",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/programs.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_name",
+      "type": "string",
+      "value": "synthetic-Frogtown Community Table — What I need funding for",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/what_i_need_funding_for.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_funding_summary",
+      "type": "string",
+      "value": "Synthetic funding priorities, in the organization's own voice. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-frogtown-community-table/what_i_need_funding_for.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    }
+  ]
+}

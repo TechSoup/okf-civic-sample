@@ -1,0 +1,221 @@
+{
+  "changemaker": {
+    "name": "synthetic-Gulf Corridor Justice Project"
+  },
+  "fields": [
+    {
+      "baseFieldShortCode": "organization_name",
+      "type": "string",
+      "value": "synthetic-Gulf Corridor Justice Project",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_overview",
+      "type": "string",
+      "value": "A fabricated Louisiana environmental-justice organization whose public evidence archive is contested by a well-resourced adversary.",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_dba_name",
+      "type": "string",
+      "value": [
+        "synthetic-Gulf Corridor",
+        "Gulf Corridor Justice Project"
+      ],
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#aliases",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_status",
+      "type": "string",
+      "value": "stable",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#status",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_country",
+      "type": "string",
+      "value": "US",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#x-civic.registration_country",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_tax_id",
+      "type": "string",
+      "value": "00-1000011",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#x-civic.registration.id",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_ntee_code",
+      "type": "string",
+      "value": [
+        "C20",
+        "C30"
+      ],
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#x-civic.ntee",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "organization_geographic_area",
+      "type": "string",
+      "value": "US-LA-orleans",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/README.md#x-civic.situation",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_project_outcomes",
+      "type": "string",
+      "value": "Synthetic annual results, illustrative only. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/impact.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "community_definition_overview",
+      "type": "string",
+      "value": "The corridor residents the organization works with. Fabricated.",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/population.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_related_programs",
+      "type": "string",
+      "value": "What the organization runs. Fabricated.",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/programs.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_name",
+      "type": "string",
+      "value": "synthetic-Gulf Corridor Justice Project — What I need funding for",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/what_i_need_funding_for.md#title",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    },
+    {
+      "baseFieldShortCode": "proposal_funding_summary",
+      "type": "string",
+      "value": "Synthetic funding priorities, in the organization's own voice. Not part of the published civic/0.6 profile.",
+      "batch": {
+        "notes": "synthetic-gulf-corridor-justice-project/what_i_need_funding_for.md#description",
+        "source": {
+          "label": "TechSoup",
+          "dataProvider": {
+            "name": "TechSoup",
+            "shortCode": "techsoup"
+          },
+          "dataProviderShortCode": "techsoup"
+        }
+      }
+    }
+  ]
+}
