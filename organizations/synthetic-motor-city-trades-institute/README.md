@@ -59,6 +59,8 @@ It is the **second-largest organization in this collection** — annual revenue 
 - **Who it serves →** [population](population.md) — adults entering the trades, including returning citizens; see also [SDG-08](../../_shared/sdg/SDG-08.md) (decent work) and [SDG-04](../../_shared/sdg/SDG-04.md) (quality education).
 - **Where →** [US-MI-detroit](../../_shared/situations/US-MI-detroit.md) (Detroit, Wayne County, Michigan).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at high confidence (0.96).
 - **What it runs →** [technology](technology/index.md). Three overlapping systems and a Salesforce implementation that stopped halfway.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

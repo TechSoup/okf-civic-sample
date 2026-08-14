@@ -59,6 +59,8 @@ It is the **largest organization in this collection** — annual revenue around 
 - **Who it serves →** [population](population.md) — rural eastern Fresno County, including agricultural worker households; see also [SDG-03](../../_shared/sdg/SDG-03.md) (good health) and [SDG-10](../../_shared/sdg/SDG-10.md) (reduced inequalities).
 - **Where →** [US-CA-fresno](../../_shared/situations/US-CA-fresno.md) (Fresno County, California).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at high confidence (0.94).
 - **What it runs →** [technology](technology/index.md). Two electronic health record systems, because of an absorption that never finished.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md). The only project in this collection that requires a Business Associate Agreement before a volunteer can start.

@@ -65,6 +65,8 @@ It is a **mid-sized** Colombian ESAL — annual revenue around **COP 1,900 milli
 - **Who it serves →** [population](population.md) — river communities with collective territorial rights; see also [SDG-06](../../_shared/sdg/SDG-06.md) (clean water), [SDG-13](../../_shared/sdg/SDG-13.md) (climate action), and [SDG-16](../../_shared/sdg/SDG-16.md) (peace, justice, strong institutions).
 - **Where →** [CO-VAC-cali](../../_shared/situations/CO-VAC-cali.md) (Cali and the Cauca basin, Valle del Cauca, Colombia).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, at 89% confidence, and **read the note on adverse-media screening**, which is the most important thing in that file.
 - **What it runs →** [technology](technology/index.md). Where a location dataset is a safety question.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).

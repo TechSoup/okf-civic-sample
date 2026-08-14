@@ -72,6 +72,8 @@ It is a very small organization — annual revenue around **$430,000**, assets a
 
 - **Who it serves →** [population.md](population.md)
 - **What it runs →** [programs.md](programs.md)
+- **What it accomplished →** [impact.md](impact.md)
+- **What it needs funding for →** [what_i_need_funding_for.md](what_i_need_funding_for.md)
 - **Has anyone verified this? →** [verification.md](verification.md)
 - **What technology it has →** [technology/](technology/index.md)
 - **Volunteer rules and one scoped project →** [technical-volunteers/](technical-volunteers/index.md)

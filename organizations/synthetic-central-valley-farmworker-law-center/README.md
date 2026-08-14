@@ -59,6 +59,8 @@ It is a **mid-sized** nonprofit — annual revenue around **$1,800,000**, assets
 - **Who it serves →** [population](population.md) — farmworkers and their households; see also [SDG-16](../../_shared/sdg/SDG-16.md) (peace, justice, strong institutions), [SDG-08](../../_shared/sdg/SDG-08.md) (decent work), and [SDG-10](../../_shared/sdg/SDG-10.md) (reduced inequalities).
 - **Where →** [US-CA-fresno](../../_shared/situations/US-CA-fresno.md) (Fresno County, California).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — yes, validated at high confidence (0.95), with an unusual limitation on what verification could examine.
 - **What it runs →** [technology](technology/index.md). Notable for what it deliberately does *not* run.
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md). The collection's hardest project, and the one where the interesting work was deciding what **not** to build.

@@ -68,6 +68,8 @@ By Kenyan standards it is a **mid-sized** community organization — annual reve
 - **Who it serves →** [population](population.md) — rural households in Nyando; see also [SDG-03](../../_shared/sdg/SDG-03.md) (good health) and [SDG-06](../../_shared/sdg/SDG-06.md) (clean water).
 - **Where →** [KE-KS-kisumu](../../_shared/situations/KE-KS-kisumu.md) (Kisumu County, Kenya).
 - **Programs →** [programs](programs.md).
+- **What it accomplished →** [impact](impact.md).
+- **What it needs funding for →** [funding priorities](what_i_need_funding_for.md).
 - **Is it eligible? →** [eligibility](verification.md) — **undetermined. Read that file; it is the point of this bundle.**
 - **What it runs →** [technology](technology/index.md). **The best field data operation in this collection.**
 - **Technology volunteers →** [technical-volunteers](technical-volunteers/index.md).
