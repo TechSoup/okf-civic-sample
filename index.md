@@ -51,3 +51,4 @@ All fifteen live under one folder.
 * [scripts/extract_pcs.py](scripts/extract_pcs.py) - vendors the attributed Candid PCS subset
 * [scripts/generate_org_json.py](scripts/generate_org_json.py) - consolidates one organization's frontmatter into a single JSON file
 * [scripts/generate_mapped_json.py](scripts/generate_mapped_json.py) - re-expresses an organization's frontmatter against another schema (e.g. [Philanthropy Data Commons](https://philanthropydatacommons.org/base-fields-list/)) via `scripts/mappings/`; see [scripts/README.md](scripts/README.md)
+* [examples/](examples/README.md) - the fifteen generated PDC-mapping outputs, one per organization

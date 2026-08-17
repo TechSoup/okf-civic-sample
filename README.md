@@ -49,6 +49,7 @@ _shared/           classification and place nodes the bundles link to
 docs/              the civic profile, worked use cases, and the field-level data dictionary
 schemas/           JSON Schema for the profile, plus fixtures that must fail
 scripts/           validator, hub generator, PCS extractor, per-org JSON export, and schema-mapping (e.g. PDC)
+examples/          generated schema-mapping output, one file per org (e.g. PDC) — see its own README
 ```
 
 Everything that describes an organization is under [`organizations/`](organizations/README.md), which carries its own README covering what the bundles are for, what is in one, and which three are deliberately broken.
